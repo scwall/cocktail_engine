@@ -9,6 +9,8 @@
 .idea/**/usage.statistics.xml
 .idea/**/dictionaries
 .idea/**/shelf
+.idea/**/vcm.xml
+.idea/**/vcl.xml
 
 # Sensitive or high-churn files
 .idea/**/dataSources/
@@ -42,7 +44,8 @@ cmake-build-*/
 
 # IntelliJ
 out/
-
+#migrations
+engine/migrations
 # mpeltonen/sbt-idea plugin
 .idea_modules/
 
