@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% for bottle in context %}
+    <p>dose {{ bottle.dose }} </p>
+    <p> dose {{ bottle.bottle.name  }} </p>
+{% endfor %}
+
+</body>
+</html>

@@ -1,11 +1,6 @@
 from django.db import models
 
 # Create your models here.
-class Cocktail(models.Model):
-    name = models.CharField(max_length=80)
-    description = models.TextField()
-
-
 
 class Bottle(models.Model):
 
@@ -13,7 +8,13 @@ class Bottle(models.Model):
     solenoidValve = models.IntegerField()
     step = models.IntegerField()
     empty = models.BooleanField(default=False)
+    image = models.ImageField(upload_to='bottle_picture')
+class Cocktail(models.Model):
 
+    name = models.CharField(max_length=80)
+    description = models.TextField()
+    bottles = models.ManyToManyField(Bottle, through='Bottles_belongs_cocktails')
+    image = models.ImageField(upload_to='cocktail_picture')
 
 
 class Bottles_belongs_cocktails(models.Model):
