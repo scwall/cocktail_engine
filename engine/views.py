@@ -6,6 +6,10 @@ from django.views.generic import ListView
 
 from engine.models import Cocktail, Bottle, Bottles_belongs_cocktails
 # Create your views here.
+class IndexViews(ListView):
+    model = Cocktail
+    context_object_name = "cocktails"
+    template_name = "index.html"
 
 @csrf_exempt
 def selected_cocktail(request,id):
