@@ -6,7 +6,7 @@ from django.views.generic import ListView
 
 from engine.models import Cocktail, Bottle, Bottles_belongs_cocktails
 # Create your views here.
-class IndexViews(ListView):
+class CocktailViews(ListView):
     model = Cocktail
     context_object_name = "cocktails"
     template_name = "index.html"

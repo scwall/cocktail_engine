@@ -28,7 +28,15 @@ class Bottles_belongs_cocktails(models.Model):
     dose = models.IntegerField()
 
     @property
-    def Recipe_of_cocktails(self):
-        return 'Bottle: {} | | Cocktail: {} | | Dose: {}'.format(self.bottle, self.cocktail, self.dose)
+    def bottle_detail(self):
+        return '{}'.format(self.bottle)
+
+    @property
+    def cocktail_detail(self):
+        return '{}'.format(self.cocktail)
+
+    @property
+    def dose_detail(self):
+        return '{}'.format(self.dose)
     def __str__(self):
         return str(self.dose)
