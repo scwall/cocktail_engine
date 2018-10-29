@@ -1,0 +1,35 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>{% block title %} {% endblock %}</title>
+    <link rel="icon"  href="{% static 'assets/img/favicon.png' %}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.5.0-alpha.1/jquery.mobile-1.5.0-alpha.1.min.js" />
+    <link rel="stylesheet" href="{% static "assets/css/Footer-Basic.css"%}">
+    <link rel="stylesheet" href="{% static "assets/css/Footer-Dark.css"%}">
+    <link rel="stylesheet" href="{% static "assets/css/Navigation-with-Button.css"%}">
+    <link rel="stylesheet" href="{% static "assets/css/Navigation-with-Search.css"%}">
+    <link rel="stylesheet" href="{% static "assets/css/styles.css"%}">
+
+
+</head>
+
+<body style="background-size: cover;background-image: url({% static 'assets/img/original_size.jpg' %});">
+{% block content %}{% endblock %}
+
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.bundle.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.5.0-alpha.1/jquery.mobile-1.5.0-alpha.1.min.js"></script>
+    <script src="{% static 'assets/js/switchnav.js' %}"></script>
+
+
+
+</body>
+
+</html>

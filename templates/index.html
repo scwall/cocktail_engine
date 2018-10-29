@@ -1,62 +1,81 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html>
+{% block title %} {{ title }} {% endblock %}
+{% block content %}
+    <div id="switchnav">
+        <nav class="navbar navbar-light navbar-expand-md navigation-clean-search">
+            <div class="container"><a class="navbar-brand" href="#">Cocktails Engine&nbsp;</a>
+                <button class="navbar-toggler" data-toggle="collapse" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span
+                        class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse"
+                     id="navcol-1">
+                    <ul class="nav navbar-nav">
+                        <li class="dropdown"><a class="dropdown-toggle nav-link dropdown-toggle" data-toggle="dropdown"
+                                                aria-expanded="false" href="#">Cocktail par bouteilles&nbsp;</a>
+                            <div class="dropdown-menu" role="menu"><a class="dropdown-item" role="presentation"
+                                                                      href="#">Vodka</a><a class="dropdown-item"
+                                                                                           role="presentation" href="#">Tequila</a><a
+                                    class="dropdown-item" role="presentation" href="#">Wisky</a><a class="dropdown-item"
+                                                                                                   role="presentation"
+                                                                                                   href="#">Coca-cola</a><a
+                                    class="dropdown-item" role="presentation" href="#">Gin</a><a class="dropdown-item"
+                                                                                                 role="presentation"
+                                                                                                 href="#">Schweppes</a>
+                            </div>
+                        </li>
+                    </ul>
+                    <form class="form-inline mr-auto" target="_self">
+                        <div class="form-group"><label for="search-field"><i class="fa fa-search"></i></label><input
+                                class="form-control search-field" type="search" name="search" id="search-field"
+                                style="width: 9rem;"></div>
+                    </form>
+                    <a class="btn btn-light action-button" role="button" href="#">Rechercher</a></div>
+            </div>
+        </nav>
+        <div style="margin-top: 10rem;">
+            <div class="container">
+                <div class="row">
+                    {% for cocktail in cocktails %}
+                        <div class="col-md-4">
+                            <div class="jumbotron">
+                                <h1>Cocktail</h1><img src="{% if cocktail.image|length > 0 %}{{ cocktail.image.url }}
+                                {% else %}{{ MEDIA_URL }}{{ '/cocktail_picture/default.png' }} {% endif %}"
+                                                      width="150rem" height="150rem">
+                                <p>Nom: {{ cocktail.name }}</p>
+                                <p>Description:{{ cocktail.description }}</p>
+                            </div>
+                        </div>
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>cocktail</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="{% static "assets/css/Footer-Basic.css"%}">
-    <link rel="stylesheet" href="{% static "assets/css/Footer-Dark.css"%}">
-    <link rel="stylesheet" href="{% static "assets/css/Navigation-with-Button.css"%}">
-    <link rel="stylesheet" href="{% static "assets/css/Navigation-with-Search.css"%}">
-    <link rel="stylesheet" href="{% static "assets/css/styles.css"%}">
-</head>
+                        {% if forloop.counter == 3 %}
+                            </div>
+                            <div style="margin-top: 5rem;">
+                            <div class="container">
+                            <div class="row">
+                        {% endif %}
+                    {% endfor %}
+                    {% if cocktails.count > 3 %}
+                        </div>
+                        </div>
+                        </div>
+                        </div>
+                        </div>
+                    {% else %}
+                        </div>
+                        </div>
+                        </div>
+                    {% endif %}
 
-<body style="background-size: cover;background-image: url({% static 'assets/img/original_size.jpg' %});">
-    <nav class="navbar navbar-light navbar-expand-md navigation-clean-search">
-        <div class="container"><a class="navbar-brand" href="#">Cocktails Engine&nbsp;</a><button class="navbar-toggler" data-toggle="collapse" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
-            <div class="collapse navbar-collapse"
-                id="navcol-1">
-                <ul class="nav navbar-nav">
-                    <li class="dropdown"><a class="dropdown-toggle nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false" href="#">Cocktail par bouteilles&nbsp;</a>
-                        <div class="dropdown-menu" role="menu"><a class="dropdown-item" role="presentation" href="#">Vodka</a><a class="dropdown-item" role="presentation" href="#">Tequila</a><a class="dropdown-item" role="presentation" href="#">Wisky</a><a class="dropdown-item" role="presentation"
-                                href="#">Coca-cola</a><a class="dropdown-item" role="presentation" href="#">Gin</a><a class="dropdown-item" role="presentation" href="#">Schweppes</a></div>
-                    </li>
-                </ul>
-                <form class="form-inline mr-auto" target="_self">
-                    <div class="form-group"><label for="search-field"><i class="fa fa-search"></i></label><input class="form-control search-field" type="search" name="search" id="search-field" style="width: 9rem;"></div>
-                </form><a class="btn btn-light action-button" role="button" href="#">Rechercher</a></div>
-        </div>
-    </nav>
-    <div style="margin-top: 10rem;">
-        <div class="container">
-            <div class="row">
-            {% for cocktail in cocktails %}
-                <div class="col-md-4">
-                    <div class="jumbotron">
-                        <h1>Cocktail</h1><img src="{% if cocktail.image|length > 0 %}{{ cocktail.image.url }} {% else  %}{{MEDIA_URL}}{{ '/cocktail_picture/default.png' }} {% endif %}" width="150rem" height="150rem">
-                        <p>Nom: {{ cocktail.name }}</p>
-                        <p>Description:{{ cocktail.description }}</p>
-                    </div>
-                </div>
-                {% if cocktails.count == 3 %}
-                    <div style="margin-top: 5rem;">
-                    <div class="container">
-                        <div class="row">
-                
-                {% endif %}
-                {% endfor %}
+    </div>
+    <h1>
+    </h1>
     <footer class="fixed-bottom">
         <div class="row justify-content-end">
-            <div class="col-auto offset-md-0"><a href="bottles.html"><i class="far fa-sun" style="font-size: 62px;padding-right: 0.5rem;color: rgb(230,201,116);"></i></a></div>
+            <div class="col-auto offset-md-0"><a href="bottles.html"><i class="far fa-sun"
+                                                                        style="font-size: 62px;padding-right: 0.5rem;color: rgb(230,201,116);"></i></a>
+            </div>
         </div>
     </footer>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.bundle.min.js"></script>
-</body>
-
-</html>
+    <script>
+        switch_json = {{ paginator_switch_json|safe }};
+    </script>
+{% endblock %}
