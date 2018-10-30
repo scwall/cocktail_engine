@@ -1,3 +1,5 @@
+import time
+
 from django.core.paginator import Paginator
 from django.http import HttpResponse, JsonResponse
 import json
@@ -35,6 +37,7 @@ def cocktailViews(request):
                     cocktails_paginator.previous_page_number())
             return JsonResponse(paginator_switch)
         return JsonResponse({'error':'error'})
+
 @csrf_exempt
 def makeCocktail(request):
     if request.is_ajax():
@@ -43,20 +46,18 @@ def makeCocktail(request):
             cocktail = Cocktail.objects.get(id=cocktail_id)
             for bottle in cocktail.bottles.all():
                 print(bottle.name, " ", Bottles_belongs_cocktails.objects.get(bottle=bottle.id, cocktail=cocktail.id))
+            job = make_cocktail.delay(3,3)
+            print(job.id)
+            time.sleep(5)
+            task = AsyncResult(job.id)
+            print(task.state)
+
+
         return JsonResponse({'foo': 'bar'})
 
 
 
 def cocktailEngineAdmin(request):
     pass
-@csrf_exempt
-def selected_cocktail(request,id):
 
-    cocktail1 = Cocktail.objects.get(id=6)
-    bottle = cocktail1.bottles_set.all()
-    bottles = Bottles_belongs_cocktails.objects.filter(cocktail=cocktail1)
-
-    json_data = json.dumps({"HTTPRESPONSE": "ok"})
-
-    return HttpResponse(json_data, mimetype="application/json")
 

@@ -8,7 +8,7 @@ $(function () {
         page = window.location.search;
         }
     $.ajax({
-        url: '/',
+        url: pathname,
         type: 'POST',
         data: {'switch_nav':'load','page':page},
         datatype: 'json',

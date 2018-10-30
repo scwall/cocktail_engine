@@ -71,51 +71,26 @@
                     {% endif %}
 
     </div>
-    <h1>
-    </h1>
-    <footer class="fixed-bottom">
+
+<div id="dialog" title="Fabrication du cocktail">
+  <div class="progress-label"></div>
+  <div id="progressbar"></div>
+</div>
+
+
+    <footer class="fixed-bottom" >
         <div class="row justify-content-end">
             <div class="col-auto offset-md-0"><a href="cocktail-engine-admin/bottles.html"><i class="far fa-sun"
                                                                                               style="font-size: 62px;padding-right: 0.5rem;color: rgb(230,201,116);"></i></a>
             </div>
         </div>
     </footer>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script>
-    var $makecocktail;
-    $makecocktail = $('.makecocktail');
-    $makecocktail.on('submit', function (e) {
-        e.preventDefault();
-        var text = this.cocktail_id.value;
-        console.log(text);
-        $.ajax({
-                url: 'make-cocktail',
-                type: 'POST',
-                data: {'cocktail_id': text},
-                datatype: 'json',
-                success: function (data) {
-                    console.log('succès post')
 
 
-                    }
-
-
-
-            });
-    });
-
-    </script>
-     <script>
-    var pathname = window.location.pathname;
-    console.log(pathname);
-     console.log('test');
-    </script>
-
-    <script>
-        switch_json = {{ paginator_switch_json|safe }};
-    </script>
 
 {% endblock %}
 {% block javascript %}
+    <script src="{% static 'assets/js/cocktailprogress.js' %}"></script>
     <script src="{% static 'assets/js/switchnav.js' %}"></script>
+
 {% endblock %}
