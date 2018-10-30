@@ -4,11 +4,12 @@ from django.conf.urls.static import static
 from django.urls import path
 
 from engine import views
-from engine.views import cocktailViews, cocktailEngineAdmin
+from engine.views import cocktailViews, cocktailEngineAdmin,makeCocktail
 app_name = 'engine'
 urlpatterns = [
 
     path('', cocktailViews, name='cocktailViews'),
+    path('make-cocktail',makeCocktail,name='makeCocktail'),
     path('Cocktail-engine-admin/',cocktailEngineAdmin,name='cocktailEngineAdmin'),
     path('selected_cocktail/<int:id>',views.selected_cocktail)
 

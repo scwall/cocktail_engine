@@ -43,6 +43,11 @@
                                                       width="150rem" height="150rem">
                                 <p>Nom: {{ cocktail.name }}</p>
                                 <p>Description:{{ cocktail.description }}</p>
+                                <form class="makecocktail" action="" method="post">
+                                <input class="question"  type="hidden" name="cocktail_id" value="{{ cocktail.id }}"><br>
+
+                                <button type="submit" class="btn btn-primary" formmethod="post">Faire le cocktails</button>
+                            </form>
                             </div>
                         </div>
 
@@ -70,11 +75,36 @@
     </h1>
     <footer class="fixed-bottom">
         <div class="row justify-content-end">
-            <div class="col-auto offset-md-0"><a href="bottles.html"><i class="far fa-sun"
-                                                                        style="font-size: 62px;padding-right: 0.5rem;color: rgb(230,201,116);"></i></a>
+            <div class="col-auto offset-md-0"><a href="cocktail-engine-admin/bottles.html"><i class="far fa-sun"
+                                                                                              style="font-size: 62px;padding-right: 0.5rem;color: rgb(230,201,116);"></i></a>
             </div>
         </div>
     </footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+    var $makecocktail;
+    $makecocktail = $('.makecocktail');
+    $makecocktail.on('submit', function (e) {
+        e.preventDefault();
+        var text = this.cocktail_id.value;
+        console.log(text);
+        $.ajax({
+                url: 'make-cocktail',
+                type: 'POST',
+                data: {'cocktail_id': text},
+                datatype: 'json',
+                success: function (data) {
+                    console.log('succès post')
+
+
+                    }
+
+
+
+            });
+    });
+
+    </script>
     <script>
         switch_json = {{ paginator_switch_json|safe }};
     </script>
