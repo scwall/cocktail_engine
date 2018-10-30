@@ -105,7 +105,17 @@
     });
 
     </script>
+     <script>
+    var pathname = window.location.pathname;
+    console.log(pathname);
+     console.log('test');
+    </script>
+
     <script>
         switch_json = {{ paginator_switch_json|safe }};
     </script>
+
+{% endblock %}
+{% block javascript %}
+    <script src="{% static 'assets/js/switchnav.js' %}"></script>
 {% endblock %}

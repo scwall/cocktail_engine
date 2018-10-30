@@ -17,16 +17,24 @@ def cocktailViews(request):
     if request.method == 'GET':
         page = request.GET.get('page')
         cocktails_paginator= paginator.get_page(number=page)
-        paginator_switch = {}
-        if cocktails_paginator.has_next():
-            paginator_switch['page_next'] = str(cocktails_paginator.has_next())
-            paginator_switch['location_next'] = reverse('engine:cocktailViews') + '?page={}'.format(cocktails_paginator.next_page_number()),
-        if cocktails_paginator.has_previous():
-            paginator_switch['page_previous'] = str(cocktails_paginator.has_previous())
-            paginator_switch['location_previous'] = reverse('engine:cocktailViews') + '?page={}'.format(cocktails_paginator.previous_page_number())
-        paginator_switch_json = json.dumps(paginator_switch,indent=4)
-        context = {'title':'Liste des cocktails','cocktails': cocktails_paginator,'paginator_switch_json':paginator_switch_json}
+        context = {'title':'Liste des cocktails','cocktails': cocktails_paginator,}
         return render(request,template_name='index.html',context=context)
+
+    if request.is_ajax():
+        if 'switch_nav' in request.POST.keys() and request.POST['switch_nav'] == 'load':
+            page = request.POST['page']
+            cocktails_paginator = paginator.get_page(number=page[6:])
+            paginator_switch = {}
+            if cocktails_paginator.has_next():
+                paginator_switch['page_next'] = str(cocktails_paginator.has_next())
+                paginator_switch['location_next'] = reverse('engine:cocktailViews') + '?page={}'.format(
+                    cocktails_paginator.next_page_number()),
+            if cocktails_paginator.has_previous():
+                paginator_switch['page_previous'] = str(cocktails_paginator.has_previous())
+                paginator_switch['location_previous'] = reverse('engine:cocktailViews') + '?page={}'.format(
+                    cocktails_paginator.previous_page_number())
+            return JsonResponse(paginator_switch)
+        return JsonResponse({'error':'error'})
 @csrf_exempt
 def makeCocktail(request):
     if request.is_ajax():
