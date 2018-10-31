@@ -10,8 +10,8 @@ $makecocktail.on('submit', function (e) {
         type: 'POST',
         data: {'cocktail_id': text},
         datatype: 'json',
-        success: function (data) {
-            console.log('succès post');
+        success: function (task_id) {
+            console.log(task_id);
                 var progressTimer,
                     progressbar = $("#progressbar"),
                     progressLabel = $(".progress-label"),
@@ -49,11 +49,18 @@ $makecocktail.on('submit', function (e) {
                 });
 
                 function progress() {
-
                     var val = progressbar.progressbar("value") || 0;
-                    progressbar.progressbar("value", val + Math.floor(Math.random() * 3));
+                    $.ajax({
+                                url: 'make-cocktail',
+                                type: 'POST',
+                                data: {'task_id': task_id.task_id},
+                                datatype: 'json', success: function (task_info) {
+                                    progressbar.progressbar("value",task_info.task_info)
+                                }
+                        });
+
                     if (val <= 99) {
-                        progressTimer = setTimeout(progress, 50);
+                        progressTimer = setTimeout(progress, 400);
                     }
                 }
 
@@ -63,7 +70,7 @@ $makecocktail.on('submit', function (e) {
                     progressbar.progressbar("value", false);
                     progressLabel
                         .text("Annuler le cocktail");
-                    downloadButton.focus();
+
                 }
 
 

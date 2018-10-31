@@ -46,14 +46,26 @@ def makeCocktail(request):
             cocktail = Cocktail.objects.get(id=cocktail_id)
             for bottle in cocktail.bottles.all():
                 print(bottle.name, " ", Bottles_belongs_cocktails.objects.get(bottle=bottle.id, cocktail=cocktail.id))
-            job = make_cocktail.delay(3,3)
-            print(job.id)
-            time.sleep(5)
-            task = AsyncResult(job.id)
-            print(task.state)
+            dict_execute ={'step':1,'solenoidValve':2}
+            task = make_cocktail.delay(dict_execute)
+            return JsonResponse({'task_id': task.id})
+
+        if 'task_id' in request.POST.keys() and request.POST['task_id']:
+
+            task_id = request.POST['task_id']
+            task = AsyncResult(task_id)
+            task_info = int()
+
+            if task.info is None:
+                task_info = 0
+            else:
+                task_info = task.result['total']
+            print(task_info)
+
+            return JsonResponse({'task_info': task_info})
 
 
-        return JsonResponse({'foo': 'bar'})
+
 
 
 
