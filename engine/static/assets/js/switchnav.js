@@ -1,5 +1,7 @@
 $(function () {
-    $('.responsive').slick({
+    var responsive = $(".responsive");
+    responsive.css("display", "block");
+    responsive.slick({
         dots: true,
         infinite: true,
         speed: 300,

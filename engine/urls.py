@@ -10,6 +10,6 @@ urlpatterns = [
 
     path('', cocktailViews, name='cocktailViews'),
     path('make-cocktail',makeCocktail,name='makeCocktail'),
-    path('Cocktail-engine-admin/',cocktailEngineAdmin,name='cocktailEngineAdmin'),
+    path('cocktail-engine-admin',cocktailEngineAdmin,name='cocktailEngineAdmin'),
 
 ]

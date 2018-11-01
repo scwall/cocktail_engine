@@ -1,4 +1,6 @@
 {% extends 'base.html' %}
+
+{% block content %}
     <nav class="navbar navbar-light navbar-expand-md navigation-clean-search">
         <div class="container"><a class="navbar-brand" href="#">Cocktails Engine&nbsp;</a><button class="navbar-toggler" data-toggle="collapse" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse"
@@ -17,83 +19,118 @@
     <div style="margin-top: 10rem;">
         <div class="container">
             <div class="row">
+
+
+
+                {% if bottles.0.id %}
                 <div class="col-md-4">
                     <div class="jumbotron">
-                        <h1>Bouteille N°1</h1><img width="150rem" height="150rem">
-                        <p>Nom:&nbsp;</p>
-                        <p>Valve:&nbsp;</p>
-                        <p>Positionnement: &nbsp;</p>
-                        <p>Vide:&nbsp;</p>
+                        <h1>Bouteille N°1</h1>
+                        <img src="{% if bottle.image|length > 0 %}{{ bottle.image.url }}
+                                {% else %}{{ MEDIA_URL }}{{ '/cocktail_picture/default.png' }} {% endif %}" width="150rem" height="150rem">
+                        <p>Nom: {{ bottle.name }}</p>
+                        <p>Valve: {{ bottle.solenoidValve }}</p>
+                        <p>Positionnement: {{ bottle.step }}</p>
+                        <p>Vide: {{ bottle.empty }}</p>
                         <p>Ajouter une image:</p>
                         <p>Supprimer:</p>
                     </div>
                 </div>
+                 {% endif %}
+            {% if bottles.1.id %}
                 <div class="col-md-4">
                     <div class="jumbotron">
-                        <h1>Bouteille N°2</h1><img width="150rem" height="150rem">
-                        <p>Nom:&nbsp;</p>
-                        <p>Valve:&nbsp;</p>
-                        <p>Positionnement: &nbsp;</p>
-                        <p>Vide:&nbsp;</p>
+                        <h1>Bouteille N°2</h1>
+                        <img src="{% if bottle.image|length > 0 %}{{ bottle.image.url }}
+                                {% else %}{{ MEDIA_URL }}{{ '/cocktail_picture/default.png' }} {% endif %}" width="150rem" height="150rem">
+                        <p>Nom: {{ bottle.name }}</p>
+                        <p>Valve: {{ bottle.solenoidValve }}</p>
+                        <p>Positionnement: {{ bottle.step }}</p>
+                        <p>Vide: {{ bottle.empty }}</p>
                         <p>Ajouter une image:</p>
                         <p>Supprimer:</p>
                     </div>
                 </div>
+            {% endif %}
+             {% if bottles.2.id %}
                 <div class="col-md-4">
                     <div class="jumbotron">
-                        <h1>Bouteille N°3</h1><img width="150rem" height="150rem">
-                        <p>Nom:&nbsp;</p>
-                        <p>Valve:&nbsp;</p>
-                        <p>Positionnement: &nbsp;</p>
-                        <p>Vide:&nbsp;</p>
+                        <h1>Bouteille N°3</h1>
+                        <img src="{% if bottle.image|length > 0 %}{{ bottle.image.url }}
+                                {% else %}{{ MEDIA_URL }}{{ '/cocktail_picture/default.png' }} {% endif %}" width="150rem" height="150rem">
+                        <p>Nom: {{ bottle.name }}</p>
+                        <p>Valve: {{ bottle.solenoidValve }}</p>
+                        <p>Positionnement: {{ bottle.step }}</p>
+                        <p>Vide: {{ bottle.empty }}</p>
                         <p>Ajouter une image:</p>
                         <p>Supprimer:</p>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
+            {% endif %}
+             </div>
     <div style="margin-top: 5rem;">
         <div class="container">
             <div class="row">
+                {% if bottles.3.id %}
                 <div class="col-md-4">
                     <div class="jumbotron">
-                        <h1>Bouteille N°4</h1><img width="150rem" height="150rem">
-                        <p>Nom:&nbsp;</p>
-                        <p>Valve:&nbsp;</p>
-                        <p>Positionnement: &nbsp;</p>
-                        <p>Vide:&nbsp;</p>
+                        <h1>Bouteille N°4</h1>
+                        <img src="{% if bottle.image|length > 0 %}{{ bottle.image.url }}
+                                {% else %}{{ MEDIA_URL }}{{ '/cocktail_picture/default.png' }} {% endif %}" width="150rem" height="150rem">
+                        <p>Nom: {{ bottle.name }}</p>
+                        <p>Valve: {{ bottle.solenoidValve }}</p>
+                        <p>Positionnement: {{ bottle.step }}</p>
+                        <p>Vide: {{ bottle.empty }}</p>
                         <p>Ajouter une image:</p>
                         <p>Supprimer:</p>
                     </div>
                 </div>
+                {% endif %}
+             {% if bottles.4.id %}
                 <div class="col-md-4">
                     <div class="jumbotron">
-                        <h1>Bouteille N°5</h1><img width="150rem" height="150rem">
-                        <p>Nom:&nbsp;</p>
-                        <p>Valve:&nbsp;</p>
-                        <p>Positionnement: &nbsp;</p>
-                        <p>Vide:&nbsp;</p>
+                        <h1>Bouteille N°5</h1>
+                        <img src="{% if bottle.image|length > 0 %}{{ bottle.image.url }}
+                                {% else %}{{ MEDIA_URL }}{{ '/cocktail_picture/default.png' }} {% endif %}" width="150rem" height="150rem">
+                       <p>Nom: {{ bottle.name }}</p>
+                        <p>Valve: {{ bottle.solenoidValve }}</p>
+                        <p>Positionnement: {{ bottle.step }}</p>
+                        <p>Vide: {{ bottle.empty }}</p>
                         <p>Ajouter une image:</p>
                         <p>Supprimer:</p>
                     </div>
                 </div>
+            {% endif %}
+            {% if bottles.5.id %}
                 <div class="col-md-4">
                     <div class="jumbotron">
-                        <h1>Bouteille N°6</h1><img width="150rem" height="150rem">
-                        <p>Nom:&nbsp;</p>
-                        <p>Valve:&nbsp;</p>
-                        <p>Positionnement: &nbsp;</p>
-                        <p>Vide:&nbsp;</p>
+                        <h1>Bouteille N°6</h1>
+                        <img src="{% if bottle.image|length > 0 %}{{ bottle.image.url }}
+                                {% else %}{{ MEDIA_URL }}{{ '/cocktail_picture/default.png' }} {% endif %}" width="150rem" height="150rem">
+                        <p>Nom: {{ bottle.name }}</p>
+                        <p>Valve: {{ bottle.solenoidValve }}</p>
+                        <p>Positionnement: {{ bottle.step }}</p>
+                        <p>Vide: {{ bottle.empty }}</p>
                         <p>Ajouter une image:</p>
                         <p>Supprimer:</p>
                     </div>
                 </div>
+            {% else %}
+               <div class="col-md-4">
+                    <div class="jumbotron">
+                        <h1>Bouteille N°6</h1>
+                        {{ form.as_p }}
+                    </div>
+                </div>
+            {% endif %}
+
+
+
+             </div>
+    </div>
             </div>
         </div>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.bundle.min.js"></script>
-</body>
+{{ form.as_p }}
 
-</html>
+  {% endblock %}

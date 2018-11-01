@@ -8,9 +8,12 @@ from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import ListView
 import json
+
+from engine.forms import BottleForm
 from engine.models import Cocktail, Bottle, Bottles_belongs_cocktails
 from .tasks import make_cocktail
 from celery.result import AsyncResult
+from django import template
 
 
 
@@ -47,4 +50,8 @@ def makeCocktail(request):
 
 
 def cocktailEngineAdmin(request):
-    pass
+
+    form = BottleForm()
+    bottles = Bottle.objects.all().order_by('id')
+    context = {'bottles':bottles,'form':form,}
+    return render(request,template_name='cocktail-engine-admin/bottles.html', context=context)
