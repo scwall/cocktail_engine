@@ -1,48 +1,37 @@
-// var switch_json;
-
-
 $(function () {
-    var pathname = window.location.pathname;
-    var page = '';
-    if(window.location.search !== undefined){
-        page = window.location.search;
-        }
-    $.ajax({
-        url: pathname,
-        type: 'POST',
-        data: {'switch_nav':'load','page':page},
-        datatype: 'json',
-        success: function (switch_json) {
-
-            // Bind the swiperightHandler callback function to the swipe event on div.box
-            $switchnav = $('#switchnav');
-            $switchnav.on("swiperight", swiperightHandler);
-            $switchnav.on("swipeleft", swipeleftHandler);
-
-            // Callback function references the event target and adds the 'swiperight' class to it
-            function swiperightHandler() {
-                console.log(switch_json);
-
-                if (switch_json.page_next === 'True') {
-
-                    window.location.href = switch_json.location_next;
+    $('.responsive').slick({
+        dots: true,
+        infinite: true,
+        speed: 300,
+        slidesToShow: 3,
+        slidesToScroll: 3,
+        responsive: [
+            {
+                breakpoint: 1024,
+                settings: {
+                    slidesToShow: 3,
+                    slidesToScroll: 3,
+                    infinite: true,
+                    dots: true
                 }
-                else {
+            },
+            {
+                breakpoint: 600,
+                settings: {
+                    slidesToShow: 2,
+                    slidesToScroll: 2
                 }
-            }
-
-            // Callback function references the event target and adds the 'swiperight' class to it
-            function swipeleftHandler() {
-
-                if (switch_json.page_previous === 'True') {
-                    window.location.href = switch_json.location_previous;
+            },
+            {
+                breakpoint: 480,
+                settings: {
+                    slidesToShow: 1,
+                    slidesToScroll: 1
                 }
             }
-
-        }
-
-
+            // You can unslick at a given breakpoint now by adding:
+            // settings: "unslick"
+            // instead of a settings object
+        ]
     });
-
 });
-

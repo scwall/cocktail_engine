@@ -8,7 +8,7 @@ from celery import shared_task,current_task
 
 
 @shared_task()
-def make_cocktail(*args):
+def make_cocktail(dict):
     #emulate create cocktail
     #send dose
     time.sleep(5)

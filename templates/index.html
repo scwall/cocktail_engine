@@ -2,92 +2,71 @@
 {% load static %}
 {% block title %} {{ title }} {% endblock %}
 {% block content %}
-    <div id="switchnav">
-        <nav class="navbar navbar-light navbar-expand-md navigation-clean-search">
-            <div class="container"><a class="navbar-brand" href="#">Cocktails Engine&nbsp;</a>
-                <button class="navbar-toggler" data-toggle="collapse" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span
-                        class="navbar-toggler-icon"></span></button>
-                <div class="collapse navbar-collapse"
-                     id="navcol-1">
-                    <ul class="nav navbar-nav">
-                        <li class="dropdown"><a class="dropdown-toggle nav-link dropdown-toggle" data-toggle="dropdown"
-                                                aria-expanded="false" href="#">Cocktail par bouteilles&nbsp;</a>
-                            <div class="dropdown-menu" role="menu"><a class="dropdown-item" role="presentation"
-                                                                      href="#">Vodka</a><a class="dropdown-item"
-                                                                                           role="presentation" href="#">Tequila</a><a
-                                    class="dropdown-item" role="presentation" href="#">Wisky</a><a class="dropdown-item"
-                                                                                                   role="presentation"
-                                                                                                   href="#">Coca-cola</a><a
-                                    class="dropdown-item" role="presentation" href="#">Gin</a><a class="dropdown-item"
-                                                                                                 role="presentation"
-                                                                                                 href="#">Schweppes</a>
-                            </div>
-                        </li>
-                    </ul>
-                    <form class="form-inline mr-auto" target="_self">
-                        <div class="form-group"><label for="search-field"><i class="fa fa-search"></i></label><input
-                                class="form-control search-field" type="search" name="search" id="search-field"
-                                style="width: 9rem;"></div>
-                    </form>
-                    <a class="btn btn-light action-button" role="button" href="#">Rechercher</a></div>
-            </div>
-        </nav>
-        <div style="margin-top: 10rem;">
-            <div class="container">
-                <div class="row">
-                    {% for cocktail in cocktails %}
-                        <div class="col-md-4">
-                            <div class="jumbotron">
-                                <h1>Cocktail</h1><img src="{% if cocktail.image|length > 0 %}{{ cocktail.image.url }}
-                                {% else %}{{ MEDIA_URL }}{{ '/cocktail_picture/default.png' }} {% endif %}"
-                                                      width="150rem" height="150rem">
-                                <p>Nom: {{ cocktail.name }}</p>
-                                <p>Description:{{ cocktail.description }}</p>
-                                <form class="makecocktail" action="" method="post">
-                                <input class="question"  type="hidden" name="cocktail_id" value="{{ cocktail.id }}"><br>
+    {#    <div id="switchnav">#}
+    <nav class="navbar navbar-light navbar-expand-md navigation-clean-search">
+        <div class="container"><a class="navbar-brand" href="#">Cocktails Engine&nbsp;</a>
+            <button class="navbar-toggler" data-toggle="collapse" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span
+                    class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse"
+                 id="navcol-1">
+                <ul class="nav navbar-nav">
+                    <li class="dropdown"><a class="dropdown-toggle nav-link dropdown-toggle" data-toggle="dropdown"
+                                            aria-expanded="false" href="#">Cocktail par bouteilles&nbsp;</a>
+                        <div class="dropdown-menu" role="menu"><a class="dropdown-item" role="presentation"
+                                                                  href="#">Vodka</a><a class="dropdown-item"
+                                                                                       role="presentation" href="#">Tequila</a><a
+                                class="dropdown-item" role="presentation" href="#">Wisky</a><a class="dropdown-item"
+                                                                                               role="presentation"
+                                                                                               href="#">Coca-cola</a><a
+                                class="dropdown-item" role="presentation" href="#">Gin</a><a class="dropdown-item"
+                                                                                             role="presentation"
+                                                                                             href="#">Schweppes</a>
+                        </div>
+                    </li>
+                </ul>
+                <form class="form-inline mr-auto" target="_self">
+                    <div class="form-group"><label for="search-field"><i class="fa fa-search"></i></label><input
+                            class="form-control search-field" type="search" name="search" id="search-field"
+                            style="width: 9rem;"></div>
+                </form>
+                <a class="btn btn-light action-button" role="button" href="#">Rechercher</a></div>
+        </div>
+    </nav>
 
-                                <button type="submit" class="btn btn-primary" formmethod="post">Faire le cocktails</button>
-                            </form>
-                            </div>
-                        </div>
-
-                        {% if forloop.counter == 3 %}
-                            </div>
-                            <div style="margin-top: 5rem;">
-                            <div class="container">
-                            <div class="row">
-                        {% endif %}
-                    {% endfor %}
-                    {% if cocktails.count > 3 %}
-                        </div>
-                        </div>
-                        </div>
-                        </div>
-                        </div>
-                    {% else %}
-                        </div>
-                        </div>
-                        </div>
-                    {% endif %}
-
+    <div id="dialog" title="Fabrication du cocktail">
+        <div class="progress-label"></div>
+        <div id="progressbar"></div>
     </div>
+    <div class="responsive" style="margin-top: 1rem">
+        {% for cocktail in cocktails %}
+            <div class="row">
+                <div class="col-md-11 .offset-md-1">
+                    <div class="jumbotron jumbotron-main text-center" style="padding-top: 1rem">
 
-<div id="dialog" title="Fabrication du cocktail">
-  <div class="progress-label"></div>
-  <div id="progressbar"></div>
-</div>
+                        <img class=" d-block m-auto" src="{% if cocktail.image|length > 0 %}{{ cocktail.image.url }}
+                                {% else %}{{ MEDIA_URL }}{{ '/cocktail_picture/default.png' }} {% endif %}"
+                             width="80rem" height="80rem">
+                        <p class=" text-center m-auto">Nom: {{ cocktail.name }}</p>
+                        <p class=" text-center m-auto">Description:{{ cocktail.description }}</p>
+                        <form class="makecocktail" action="" method="post">
+                            <input class=" question" type="hidden" name="cocktail_id" value="{{ cocktail.id }}"><br>
 
-
-    <footer class="fixed-bottom" >
+                            <button type="submit" class=" btn btn-primary d-block m-auto" formmethod="post">Faire le
+                                cocktails
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <footer class="fixed-bottom">
         <div class="row justify-content-end">
             <div class="col-auto offset-md-0"><a href="cocktail-engine-admin/bottles.html"><i class="far fa-sun"
                                                                                               style="font-size: 62px;padding-right: 0.5rem;color: rgb(230,201,116);"></i></a>
             </div>
         </div>
     </footer>
-
-
-
 {% endblock %}
 {% block javascript %}
     <script src="{% static 'assets/js/cocktailprogress.js' %}"></script>
