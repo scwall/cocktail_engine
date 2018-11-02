@@ -41,17 +41,25 @@ def makeCocktail(request):
         if 'task_id' in request.POST.keys() and request.POST['task_id']:
             task_id = request.POST['task_id']
             task = AsyncResult(task_id)
-            task_info = int()
             if task.info is None:
                 task_info = 0
             else:
                 task_info = task.result['total']
             return JsonResponse({'task_info': task_info})
 
-
+@csrf_exempt
 def cocktailEngineAdmin(request):
 
     form = BottleForm()
     bottles = Bottle.objects.all().order_by('id')
     context = {'bottles':bottles,'form':form,}
+    if request.method == 'POST':
+        form = BottleForm(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+            # process the data in form.cleaned_data as required
+            # ...
+            # redirect to a new URL:
+            pass
+
     return render(request,template_name='cocktail-engine-admin/bottles.html', context=context)
