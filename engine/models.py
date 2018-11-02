@@ -9,7 +9,7 @@ class Bottle(models.Model):
                                       MaxValueValidator(6)])
     step = models.IntegerField()
     empty = models.BooleanField(default=False)
-    image = models.ImageField(upload_to='bottle_picture',null=True,default='bottle_picture/default.jpg')
+    image = models.ImageField(upload_to='bottle_picture',null=True,)
     def __str__(self):
         return self.name
 

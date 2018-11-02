@@ -29,13 +29,13 @@
                     <div class="col-md-4">
                         <div class="jumbotron">
                             <h1>Bouteille N°1</h1>
-                            <img src="{% if bottle.image|length > 0 %}{{ bottle.image.url }}
-                                {% else %}{{ MEDIA_URL }}{{ '/cocktail_picture/default.png' }} {% endif %}"
+                            <img src="{% if bottles.0.image|length > 0 %}{{ bottles.0.image.url }}
+                                {% else %}{{ MEDIA_URL }}{{ '/bottle_picture/default.jpg' }} {% endif %}"
                                  width="150rem" height="150rem">
-                            <p>Nom: {{ bottle.name }}</p>
-                            <p>Valve: {{ bottle.solenoidValve }}</p>
-                            <p>Positionnement: {{ bottle.step }}</p>
-                            <p>Vide: {{ bottle.empty }}</p>
+                            <p>Nom: {{ bottles.0.name }}</p>
+                            <p>Positionnement: {{ bottles.0.step }}</p>
+                            <label for="empty_1">Vide: </label>
+                                    <input type="checkbox" id="empty_1" name="1" class="empty">
                             <p>Ajouter une image:</p>
                             <p>Supprimer:</p>
                         </div>
@@ -44,7 +44,7 @@
                     <div class="col-md-4">
                         <div class="jumbotron">
                             <h1>Bouteille N°1</h1>
-                            {{ form.as_p }}
+                            {{ bottle_create_form.as_p }}
                         </div>
                     </div>
                 {% endif %}
@@ -52,13 +52,13 @@
                     <div class="col-md-4">
                         <div class="jumbotron">
                             <h1>Bouteille N°2</h1>
-                            <img src="{% if bottle.image|length > 0 %}{{ bottle.image.url }}
-                                {% else %}{{ MEDIA_URL }}{{ '/cocktail_picture/default.png' }} {% endif %}"
+                            <img src="{% if bottles.1.image|length > 0 %}{{ bottles.1.image.url }}
+                                {% else %}{{ MEDIA_URL }}{{ '/bottle_picture/default.jpg' }} {% endif %}"
                                  width="150rem" height="150rem">
-                            <p>Nom: {{ bottle.name }}</p>
-                            <p>Valve: {{ bottle.solenoidValve }}</p>
-                            <p>Positionnement: {{ bottle.step }}</p>
-                            <p>Vide: {{ bottle.empty }}</p>
+                            <p>Nom: {{ bottles.1.name }}</p>
+                            <p>Positionnement: {{ bottles.1.step }}</p>
+                            <label for="empty_2">Vide: </label>
+                                    <input type="checkbox" id="empty_2" name="2" class="empty">
                             <p>Ajouter une image:</p>
                             <p>Supprimer:</p>
                         </div>
@@ -67,7 +67,7 @@
                     <div class="col-md-4">
                         <div class="jumbotron">
                             <h1>Bouteille N°2</h1>
-                            {{ form.as_p }}
+                            {{ bottle_create_form.as_p }}
                         </div>
                     </div>
                 {% endif %}
@@ -75,13 +75,13 @@
                     <div class="col-md-4">
                         <div class="jumbotron">
                             <h1>Bouteille N°3</h1>
-                            <img src="{% if bottle.image|length > 0 %}{{ bottle.image.url }}
-                                {% else %}{{ MEDIA_URL }}{{ '/cocktail_picture/default.png' }} {% endif %}"
+                            <img src="{% if bottles.2.image|length > 0 %}{{ bottles.2.image.url }}
+                                {% else %}{{ MEDIA_URL }}{{ '/bottle_picture/default.jpg' }} {% endif %}"
                                  width="150rem" height="150rem">
-                            <p>Nom: {{ bottle.name }}</p>
-                            <p>Valve: {{ bottle.solenoidValve }}</p>
-                            <p>Positionnement: {{ bottle.step }}</p>
-                            <p>Vide: {{ bottle.empty }}</p>
+                            <p>Nom: {{ bottles.2.name }}</p>
+                            <p>Positionnement: {{ bottles.2.step }}</p>
+                            <label for="empty_3">Vide: </label>
+                                    <input type="checkbox" id="empty_3" name="3" class="empty">
                             <p>Ajouter une image:</p>
                             <p>Supprimer:</p>
                         </div>
@@ -90,7 +90,7 @@
                     <div class="col-md-4">
                         <div class="jumbotron">
                             <h1>Bouteille N°3</h1>
-                            {{ form.as_p }}
+                            {{ bottle_create_form.as_p }}
                         </div>
                     </div>
                 {% endif %}
@@ -102,13 +102,13 @@
                             <div class="col-md-4">
                                 <div class="jumbotron">
                                     <h1>Bouteille N°4</h1>
-                                    <img src="{% if bottle.image|length > 0 %}{{ bottle.image.url }}
-                                {% else %}{{ MEDIA_URL }}{{ '/cocktail_picture/default.png' }} {% endif %}"
+                                    <img src="{% if bottles.3.image|length > 0 %}{{ bottles.3.image.url }}
+                                {% else %}{{ MEDIA_URL }}{{ '/bottle_picture/default.jpg' }} {% endif %}"
                                          width="150rem" height="150rem">
-                                    <p>Nom: {{ bottle.name }}</p>
-                                    <p>Valve: {{ bottle.solenoidValve }}</p>
-                                    <p>Positionnement: {{ bottle.step }}</p>
-                                    <p>Vide: {{ bottle.empty }}</p>
+                                    <p>Nom: {{ bottles.3.name }}</p>
+                                    <p>Positionnement: {{ bottles.3.step }}</p>
+                                    <label for="empty_4">Vide: </label>
+                                    <input type="checkbox" id="empty_4" name="4" class="empty">
                                     <p>Ajouter une image:</p>
                                     <p>Supprimer:</p>
                                 </div>
@@ -117,7 +117,7 @@
                             <div class="col-md-4">
                                 <div class="jumbotron">
                                     <h1>Bouteille N°4</h1>
-                                    {{ form.as_p }}
+                                    {{ bottle_create_form.as_p }}
                                 </div>
                             </div>
                         {% endif %}
@@ -125,13 +125,13 @@
                             <div class="col-md-4">
                                 <div class="jumbotron">
                                     <h1>Bouteille N°5</h1>
-                                    <img src="{% if bottle.image|length > 0 %}{{ bottle.image.url }}
-                                {% else %}{{ MEDIA_URL }}{{ '/cocktail_picture/default.png' }} {% endif %}"
+                                    <img src="{% if bottles.4.image|length > 0 %}{{ bottles.4.image.url }}
+                                {% else %}{{ MEDIA_URL }}{{ '/bottle_picture/default.jpg' }} {% endif %}"
                                          width="150rem" height="150rem">
-                                    <p>Nom: {{ bottle.name }}</p>
-                                    <p>Valve: {{ bottle.solenoidValve }}</p>
-                                    <p>Positionnement: {{ bottle.step }}</p>
-                                    <p>Vide: {{ bottle.empty }}</p>
+                                    <p>Nom: {{ bottles.4.name }}</p>
+                                    <p>Positionnement: {{ bottles.4.step }}</p>
+                                    <label for="empty_5">Vide: </label>
+                                    <input type="checkbox" id="empty_5" name="5" class="empty">
                                     <p>Ajouter une image:</p>
                                     <p>Supprimer:</p>
                                 </div>
@@ -140,7 +140,7 @@
                             <div class="col-md-4">
                                 <div class="jumbotron">
                                     <h1>Bouteille N°5</h1>
-                                    {{ form.as_p }}
+                                    {{ bottle_create_form.as_p }}
                                 </div>
                             </div>
                         {% endif %}
@@ -148,13 +148,15 @@
                             <div class="col-md-4">
                                 <div class="jumbotron">
                                     <h1>Bouteille N°6</h1>
-                                    <img src="{% if bottle.image|length > 0 %}{{ bottle.image.url }}
-                                {% else %}{{ MEDIA_URL }}{{ '/cocktail_picture/default.png' }} {% endif %}"
+                                    <img src="{% if bottles.5.image|length > 0 %}{{ bottles.5.image.url }}
+                                {% else %}{{ MEDIA_URL }}{{ '/bottle_picture/default.jpg' }} {% endif %}"
                                          width="150rem" height="150rem">
-                                    <p>Nom: {{ bottle.name }}</p>
-                                    <p>Valve: {{ bottle.solenoidValve }}</p>
-                                    <p>Positionnement: {{ bottle.step }}</p>
-                                    <p>Vide: {{ bottle.empty }}</p>
+                                    <p>Nom: {{ bottles.5.name }}</p>
+                                    <p>Positionnement: {{ bottles.5.step }}</p>
+                                    <label for="step:6">Positionnement: </label>
+                                    <input type="number" id="step:6" name="step" min="1" max="400" value=""><br>
+                                    <label for="empty_6">Vide: </label>
+                                    <input type="checkbox" id="empty_6" name="6" class="empty">
                                     <p>Ajouter une image:</p>
                                     <p>Supprimer:</p>
                                 </div>
@@ -165,7 +167,8 @@
                                     <h1>Bouteille N°6</h1>
                                     <form action="{% url 'engine:cocktailEngineAdmin' %}" method="post">
                                         <div class="form-group">
-                                            {{ form.as_p }}
+                                            {{ bottle_create_form.as_p }}
+                                            <input type="hidden" name="solenoidValve" value="6">
                                             <input type="submit" value="Submit">
                                         </div>
                                     </form>
@@ -180,4 +183,35 @@
         </div>
     </div>
 
+{% endblock %}
+{% block javascript %}
+    <script>
+    $(function () {
+        $.ajax({
+            url: 'bottle-modify-parameter',
+            type: 'POST',
+            data: {'empty': ''},
+            datatype: 'json',
+            success: function (empty) {
+                console.log(Object.keys(empty.empty).length);
+                for (var i=1; i<Object.keys(empty.empty).length + 1; i++) {
+                    $(('#empty_'+i)).prop('checked', empty.empty[i]);
+                }
+            }
+        });
+
+
+
+
+    $(".empty").click( function(){
+   if( $(this).is(':checked') )  console.log("checked");
+   console.log($(this).attr('name'));
+   if($(this).is(':checked') === false ){
+        console.log("unchecked");
+       $(this).prop('checked', true);
+   }
+
+    });
+    })
+    </script>
 {% endblock %}

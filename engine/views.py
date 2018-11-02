@@ -9,7 +9,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import ListView
 import json
 
-from engine.forms import BottleForm
+from engine.forms import BottleCreateForm, BottleForm
 from engine.models import Cocktail, Bottle, Bottles_belongs_cocktails
 from .tasks import make_cocktail
 from celery.result import AsyncResult
@@ -49,17 +49,32 @@ def makeCocktail(request):
 
 @csrf_exempt
 def cocktailEngineAdmin(request):
-
-    form = BottleForm()
     bottles = Bottle.objects.all().order_by('id')
-    context = {'bottles':bottles,'form':form,}
     if request.method == 'POST':
-        form = BottleForm(request.POST)
+        bottle_create_form = BottleCreateForm(request.POST)
+        bottle_form = BottleForm(request.POST)
         # check whether it's valid:
-        if form.is_valid():
-            # process the data in form.cleaned_data as required
-            # ...
-            # redirect to a new URL:
-            pass
-
+        if bottle_create_form.is_valid():
+            name = bottle_create_form.cleaned_data['name']
+            solenoidValve = bottle_create_form.cleaned_data['solenoidValve']
+            step = bottle_create_form.cleaned_data['step']
+            empty = bottle_create_form.cleaned_data['empty']
+            image = bottle_create_form.cleaned_data['image']
+            bottle = Bottle.objects.create(name=name,solenoidValve=solenoidValve,step=step,empty=empty,image=image)
+            bottle.save()
+    else:
+        bottle_create_form = BottleCreateForm()
+        bottle_form = BottleForm()
+    context = {'bottles': bottles, 'bottle_create_form': bottle_create_form,'bottle_form':bottle_form }
     return render(request,template_name='cocktail-engine-admin/bottles.html', context=context)
+@csrf_exempt
+def bottleModifyParameter(request):
+    if request.is_ajax():
+        if 'empty' in request.POST.keys():
+            print('true')
+            empty = {}
+            bottles = Bottle.objects.all()
+            for bottle in bottles:
+                empty[bottle.solenoidValve] = bottle.empty
+            return JsonResponse({'empty': empty})
+        return JsonResponse({'':''})
