@@ -38,7 +38,7 @@
                         <input type="number" class="step" id="step_{{ valve.number }}" name="{{ valve.number}}" min="1" max="400"
                                value="{{ valve.step }}"><br>
                         <label for="empty_{{ valve.number }}">Vide: </label>
-                        <input type="checkbox" id="empty_{{ valve.number }}" name="{{ valve.number}}" class="empty"
+                        <input type="checkbox" id="empty_{{ valve.number }}" name="{{valve.number}}" class="empty"
                                 {% if valve.bottle.empty %}
                                checked {% endif %}> <br>
                         <form action="{% url 'engine:cocktailEngineAdmin' %}" method="get">

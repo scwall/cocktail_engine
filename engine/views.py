@@ -93,6 +93,7 @@ def bottleModifyParameter(request):
             return JsonResponse({'empty': 'ok'})
         if 'step' in request.POST.keys() and request.POST['step'] and 'solenoidValve' in request.POST.keys() and request.POST['solenoidValve']:
             step = request.POST['step']
+            print(request.POST['solenoidValve'])
             solenoidValve = request.POST['solenoidValve']
             SolenoidValve.objects.filter(number=solenoidValve).update(step=step)
             return JsonResponse({'empty': 'ok'})

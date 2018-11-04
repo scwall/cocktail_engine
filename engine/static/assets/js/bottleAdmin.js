@@ -47,10 +47,8 @@
             });
 
   $(document).on('input', '.step', function() {
-      this_step = $(".step");
+      this_step = $(this);
       empty_object = $(this_step).attr('name');
-
-
       $.ajax({
           url: 'bottle-modify-parameter',
           type: 'POST',
