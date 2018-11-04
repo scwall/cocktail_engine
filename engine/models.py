@@ -1,15 +1,16 @@
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 # Create your models here.
+class SolenoidValve(models.Model):
+    number = models.IntegerField(validators=[MinValueValidator(1),
+                                    MaxValueValidator(6)])
+    step = models.IntegerField()
 
 class Bottle(models.Model):
-
     name = models.CharField(max_length=80)
-    solenoidValve = models.IntegerField(validators=[MinValueValidator(1),
-                                      MaxValueValidator(6)])
-    step = models.IntegerField()
     empty = models.BooleanField(default=False)
-    image = models.ImageField(upload_to='bottle_picture',null=True,)
+    image = models.ImageField(upload_to='bottle_picture',blank=True, null=True,)
+    solenoid_valve = models.OneToOneField(SolenoidValve,on_delete=models.CASCADE)
     def __str__(self):
         return self.name
 
@@ -41,3 +42,5 @@ class Bottles_belongs_cocktails(models.Model):
         return '{}'.format(self.dose)
     def __str__(self):
         return str(self.dose)
+
+
