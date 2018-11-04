@@ -29,16 +29,16 @@
             {% if valve.bottle %}
                 <div class="col-md-4">
                     <div class="jumbotron">
-                        <h1>Bouteille N°{{ forloop.counter}}</h1>
+                        <h1>Bouteille N°{{ valve.number }}</h1>
                         <img src="{% if valve.bottle.image|length > 0 %}{{ valve.bottle.image.url }}
                                 {% else %}{{ MEDIA_URL }}{{ '/bottle_picture/default.jpg' }} {% endif %}"
                              width="150rem" height="150rem">
                         <p>Nom: {{ valve.bottle.name }}</p>
-                        <label for="step_{{ valve.bottles.count }}">Positionnement: </label>
-                        <input type="number" id="step_{{ valve.bottles.count }}" name="1" min="1" max="400"
+                        <label for="step_{{ valve.number }}">Positionnement: </label>
+                        <input type="number" class="step" id="step_{{ valve.number }}" name="{{ valve.number}}" min="1" max="400"
                                value="{{ valve.step }}"><br>
-                        <label for="empty_{{ valve.bottles.count }}">Vide: </label>
-                        <input type="checkbox" id="empty_{{ valve.bottles.count }}" name="1" class="empty"
+                        <label for="empty_{{ valve.number }}">Vide: </label>
+                        <input type="checkbox" id="empty_{{ valve.number }}" name="{{ valve.number}}" class="empty"
                                 {% if valve.bottle.empty %}
                                checked {% endif %}> <br>
                         <form action="{% url 'engine:cocktailEngineAdmin' %}" method="get">
@@ -78,13 +78,6 @@
 {% endblock %}
 {% block javascript %}
     <script src="{% static 'assets/js/bottleAdmin.js' %}"></script>
-    <script>
-        $(function () {
-            $(document).on('input', '#step_6', function () {
-                console.log($(this).val());
-            });
-        })
-    </script>
     <script>
 
     </script>

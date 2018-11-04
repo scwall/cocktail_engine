@@ -52,7 +52,8 @@ def makeCocktail(request):
 
 @csrf_exempt
 def cocktailEngineAdmin(request):
-    valves = SolenoidValve.objects.all()
+    valves = SolenoidValve.objects.all().order_by('number')
+
     if request.method == 'GET':
         if request.GET.get('deleteBottle'):
             delete_bottle = request.GET.get('deleteBottle')
@@ -89,5 +90,10 @@ def bottleModifyParameter(request):
             empty = (lambda boolean: True if 'true' == boolean else False)(request.POST['empty'])
             solenoidValve = request.POST['solenoidValve']
             Bottle.objects.filter(solenoid_valve=solenoidValve).update(empty=empty)
+            return JsonResponse({'empty': 'ok'})
+        if 'step' in request.POST.keys() and request.POST['step'] and 'solenoidValve' in request.POST.keys() and request.POST['solenoidValve']:
+            step = request.POST['step']
+            solenoidValve = request.POST['solenoidValve']
+            SolenoidValve.objects.filter(number=solenoidValve).update(step=step)
             return JsonResponse({'empty': 'ok'})
         return JsonResponse({'': ''})
