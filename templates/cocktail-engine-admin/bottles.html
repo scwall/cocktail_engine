@@ -1,8 +1,8 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block content %}
     <nav class="navbar navbar-light navbar-expand-md navigation-clean-search">
-        <div class="container"><a class="navbar-brand" href="#">Cocktails Engine&nbsp;</a>
+        <div class="container"><a class="navbar-brand" href="/">Cocktails Engine&nbsp;</a>
             <button class="navbar-toggler" data-toggle="collapse" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span
                     class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse"
@@ -23,195 +23,67 @@
         </div>
     </nav>
     <div style="margin-top: 10rem;">
-        <div class="container">
-            <div class="row">
-                {% if bottles.0.solenoidValve %}
-                    <div class="col-md-4">
-                        <div class="jumbotron">
-                            <h1>Bouteille N°1</h1>
-                            <img src="{% if bottles.0.image|length > 0 %}{{ bottles.0.image.url }}
+    <div class="container">
+    <div class="row">
+        {% for bottle_number,bottle in bottles.items %}
+            {% if bottle != None %}
+                <div class="col-md-4">
+                    <div class="jumbotron">
+                        <h1>Bouteille N°{{ bottle_number }}</h1>
+                        <img src="{% if bottle.image|length > 0 %}{{ bottle.image.url }}
                                 {% else %}{{ MEDIA_URL }}{{ '/bottle_picture/default.jpg' }} {% endif %}"
-                                 width="150rem" height="150rem">
-                            <p>Nom: {{ bottles.0.name }}</p>
-                            <p>Positionnement: {{ bottles.0.step }}</p>
-                            <label for="empty_1">Vide: </label>
-                                    <input type="checkbox" id="empty_1" name="1" class="empty">
-                            <p>Ajouter une image:</p>
-                            <p>Supprimer:</p>
-                        </div>
-                    </div>
-                {% else %}
-                    <div class="col-md-4">
-                        <div class="jumbotron">
-                            <h1>Bouteille N°1</h1>
-                            {{ bottle_create_form.as_p }}
-                        </div>
-                    </div>
-                {% endif %}
-                {% if bottles.1.solenoidValve %}
-                    <div class="col-md-4">
-                        <div class="jumbotron">
-                            <h1>Bouteille N°2</h1>
-                            <img src="{% if bottles.1.image|length > 0 %}{{ bottles.1.image.url }}
-                                {% else %}{{ MEDIA_URL }}{{ '/bottle_picture/default.jpg' }} {% endif %}"
-                                 width="150rem" height="150rem">
-                            <p>Nom: {{ bottles.1.name }}</p>
-                            <p>Positionnement: {{ bottles.1.step }}</p>
-                            <label for="empty_2">Vide: </label>
-                                    <input type="checkbox" id="empty_2" name="2" class="empty">
-                            <p>Ajouter une image:</p>
-                            <p>Supprimer:</p>
-                        </div>
-                    </div>
-                {% else %}
-                    <div class="col-md-4">
-                        <div class="jumbotron">
-                            <h1>Bouteille N°2</h1>
-                            {{ bottle_create_form.as_p }}
-                        </div>
-                    </div>
-                {% endif %}
-                {% if bottles.2.solenoidValve %}
-                    <div class="col-md-4">
-                        <div class="jumbotron">
-                            <h1>Bouteille N°3</h1>
-                            <img src="{% if bottles.2.image|length > 0 %}{{ bottles.2.image.url }}
-                                {% else %}{{ MEDIA_URL }}{{ '/bottle_picture/default.jpg' }} {% endif %}"
-                                 width="150rem" height="150rem">
-                            <p>Nom: {{ bottles.2.name }}</p>
-                            <p>Positionnement: {{ bottles.2.step }}</p>
-                            <label for="empty_3">Vide: </label>
-                                    <input type="checkbox" id="empty_3" name="3" class="empty">
-                            <p>Ajouter une image:</p>
-                            <p>Supprimer:</p>
-                        </div>
-                    </div>
-                {% else %}
-                    <div class="col-md-4">
-                        <div class="jumbotron">
-                            <h1>Bouteille N°3</h1>
-                            {{ bottle_create_form.as_p }}
-                        </div>
-                    </div>
-                {% endif %}
-            </div>
-            <div style="margin-top: 5rem;">
-                <div class="container">
-                    <div class="row">
-                        {% if bottles.3.solenoidValve %}
-                            <div class="col-md-4">
-                                <div class="jumbotron">
-                                    <h1>Bouteille N°4</h1>
-                                    <img src="{% if bottles.3.image|length > 0 %}{{ bottles.3.image.url }}
-                                {% else %}{{ MEDIA_URL }}{{ '/bottle_picture/default.jpg' }} {% endif %}"
-                                         width="150rem" height="150rem">
-                                    <p>Nom: {{ bottles.3.name }}</p>
-                                    <p>Positionnement: {{ bottles.3.step }}</p>
-                                    <label for="empty_4">Vide: </label>
-                                    <input type="checkbox" id="empty_4" name="4" class="empty">
-                                    <p>Ajouter une image:</p>
-                                    <p>Supprimer:</p>
-                                </div>
-                            </div>
-                        {% else %}
-                            <div class="col-md-4">
-                                <div class="jumbotron">
-                                    <h1>Bouteille N°4</h1>
-                                    {{ bottle_create_form.as_p }}
-                                </div>
-                            </div>
-                        {% endif %}
-                        {% if bottles.4.solenoidValve %}
-                            <div class="col-md-4">
-                                <div class="jumbotron">
-                                    <h1>Bouteille N°5</h1>
-                                    <img src="{% if bottles.4.image|length > 0 %}{{ bottles.4.image.url }}
-                                {% else %}{{ MEDIA_URL }}{{ '/bottle_picture/default.jpg' }} {% endif %}"
-                                         width="150rem" height="150rem">
-                                    <p>Nom: {{ bottles.4.name }}</p>
-                                    <p>Positionnement: {{ bottles.4.step }}</p>
-                                    <label for="empty_5">Vide: </label>
-                                    <input type="checkbox" id="empty_5" name="5" class="empty">
-                                    <p>Ajouter une image:</p>
-                                    <p>Supprimer:</p>
-                                </div>
-                            </div>
-                        {% else %}
-                            <div class="col-md-4">
-                                <div class="jumbotron">
-                                    <h1>Bouteille N°5</h1>
-                                    {{ bottle_create_form.as_p }}
-                                </div>
-                            </div>
-                        {% endif %}
-                        {% if bottles.5.solenoidValve %}
-                            <div class="col-md-4">
-                                <div class="jumbotron">
-                                    <h1>Bouteille N°6</h1>
-                                    <img src="{% if bottles.5.image|length > 0 %}{{ bottles.5.image.url }}
-                                {% else %}{{ MEDIA_URL }}{{ '/bottle_picture/default.jpg' }} {% endif %}"
-                                         width="150rem" height="150rem">
-                                    <p>Nom: {{ bottles.5.name }}</p>
-                                    <p>Positionnement: {{ bottles.5.step }}</p>
-                                    <label for="step:6">Positionnement: </label>
-                                    <input type="number" id="step:6" name="step" min="1" max="400" value=""><br>
-                                    <label for="empty_6">Vide: </label>
-                                    <input type="checkbox" id="empty_6" name="6" class="empty">
-                                    <p>Ajouter une image:</p>
-                                    <p>Supprimer:</p>
-                                </div>
-                            </div>
-                        {% else %}
-                            <div class="col-md-4">
-                                <div class="jumbotron">
-                                    <h1>Bouteille N°6</h1>
-                                    <form action="{% url 'engine:cocktailEngineAdmin' %}" method="post">
-                                        <div class="form-group">
-                                            {{ bottle_create_form.as_p }}
-                                            <input type="hidden" name="solenoidValve" value="6">
-                                            <input type="submit" value="Submit">
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        {% endif %}
-
-
+                             width="150rem" height="150rem">
+                        <p>Nom: {{ bottle.name }}</p>
+                        <label for="step_{{ bottle_number }}">Positionnement: </label>
+                        <input type="number" id="step_{{ bottle_number }}" name="1" min="1" max="400"
+                               value="{{ bottle.step }}"><br>
+                        <label for="empty_{{ bottle_number }}">Vide: </label>
+                        <input type="checkbox" id="empty_{{ bottle_number }}" name="1" class="empty"
+                                {% if bottle.empty %}
+                               checked {% endif %}> <br>
+                        <form action="{% url 'engine:cocktailEngineAdmin' %}" method="get">
+                            <button class="btn btn-danger">Supprimer</button>
+                            <input type="hidden" name="deleteBottle" value="{{ bottle.id }}">
+                        </form>
                     </div>
                 </div>
-            </div>
+            {% else %}
+                <div class="col-md-4">
+                    <div class="jumbotron">
+                        <h1>Bouteille N°{{ bottle_number }}</h1>
+                        <form action="{% url 'engine:cocktailEngineAdmin' %}" method="post">
+                            <div class="form-group">
+                                {{ bottle_create_form.as_p }}
+                                <input type="hidden" id="create_solenoidValve_{{ bottle_number }}" name="solenoidValve"
+                                       value="1">
+                                <input type="hidden" id="create_step_{{ bottle_number }}" name="step" value="30">
+                                <input class="btn btn-primary" type="submit" value="Ajouter">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            {% endif %}
+
+            {% if bottle_number == 3 %}
+                </div>
+                <div class="row" style="margin-top: 5rem;">
+
+            {% endif %}
+
+        {% endfor %}
         </div>
-    </div>
 
 {% endblock %}
 {% block javascript %}
+    <script src="{% static 'assets/js/bottleAdmin.js' %}"></script>
     <script>
-    $(function () {
-        $.ajax({
-            url: 'bottle-modify-parameter',
-            type: 'POST',
-            data: {'empty': ''},
-            datatype: 'json',
-            success: function (empty) {
-                console.log(Object.keys(empty.empty).length);
-                for (var i=1; i<Object.keys(empty.empty).length + 1; i++) {
-                    $(('#empty_'+i)).prop('checked', empty.empty[i]);
-                }
-            }
-        });
+        $(function () {
+            $(document).on('input', '#step_6', function () {
+                console.log($(this).val());
+            });
+        })
+    </script>
+    <script>
 
-
-
-
-    $(".empty").click( function(){
-   if( $(this).is(':checked') )  console.log("checked");
-   console.log($(this).attr('name'));
-   if($(this).is(':checked') === false ){
-        console.log("unchecked");
-       $(this).prop('checked', true);
-   }
-
-    });
-    })
     </script>
 {% endblock %}
