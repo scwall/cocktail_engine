@@ -9,7 +9,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import ListView
 import json
 
-from engine.forms import BottleCreateForm, BottleForm
+from engine.forms import BottleCreateForm, bottle_group, CocktailMakeForm
 from engine.models import Cocktail, Bottle, Bottles_belongs_cocktails, SolenoidValve
 from .tasks import make_cocktail
 from celery.result import AsyncResult
@@ -51,18 +51,17 @@ def makeCocktail(request):
 
 
 @csrf_exempt
-def cocktailEngineAdmin(request):
+def bottleEngineAdmin(request):
     valves = SolenoidValve.objects.all().order_by('number')
 
     if request.method == 'GET':
         if request.GET.get('deleteBottle'):
             delete_bottle = request.GET.get('deleteBottle')
             Bottle.objects.filter(id=delete_bottle).delete()
-            return HttpResponseRedirect(reverse('engine:cocktailEngineAdmin'))
+            return HttpResponseRedirect(reverse('engine:bottleEngineAdmin'))
 
     if request.method == 'POST':
         bottle_create_form = BottleCreateForm(request.POST)
-        bottle_form = BottleForm(request.POST)
         # check whether it's valid:
         if bottle_create_form.is_valid():
             bottle = Bottle.objects.filter(solenoid_valve=bottle_create_form.cleaned_data['solenoidValve'])
@@ -72,12 +71,11 @@ def cocktailEngineAdmin(request):
                                                image=bottle_create_form.cleaned_data['image'],
                                                solenoid_valve=SolenoidValve.objects.get(number=bottle_create_form.cleaned_data['solenoidValve']))
                 bottle.save()
-                return HttpResponseRedirect(reverse('engine:cocktailEngineAdmin'))
+                return HttpResponseRedirect(reverse('engine:bottleEngineAdmin'))
 
     else:
         bottle_create_form = BottleCreateForm()
-        bottle_form = BottleForm()
-    context = {'bottles': valves, 'bottle_create_form': bottle_create_form, 'bottle_form': bottle_form, }
+    context = {'bottles': valves, 'bottle_create_form': bottle_create_form, }
 
     return render(request, template_name='cocktail-engine-admin/bottles.html', context=context)
 
@@ -93,8 +91,13 @@ def bottleModifyParameter(request):
             return JsonResponse({'empty': 'ok'})
         if 'step' in request.POST.keys() and request.POST['step'] and 'solenoidValve' in request.POST.keys() and request.POST['solenoidValve']:
             step = request.POST['step']
-            print(request.POST['solenoidValve'])
             solenoidValve = request.POST['solenoidValve']
             SolenoidValve.objects.filter(number=solenoidValve).update(step=step)
             return JsonResponse({'empty': 'ok'})
         return JsonResponse({'': ''})
+@csrf_exempt
+def cocktailEngineAdmin(request):
+
+    cocktail_make_form = CocktailMakeForm()
+    context ={'bottle_group':bottle_group,'cocktail_make_form':cocktail_make_form}
+    return render(request,template_name='cocktail-engine-admin/cocktails.html',context=context)

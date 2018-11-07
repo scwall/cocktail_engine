@@ -19,7 +19,7 @@ class Cocktail(models.Model):
     name = models.CharField(max_length=80)
     description = models.TextField()
     bottles = models.ManyToManyField(Bottle, through='Bottles_belongs_cocktails', related_name='cocktails')
-    image = models.ImageField(upload_to='cocktail_picture',null=True)
+    image = models.ImageField(upload_to='cocktail_picture',blank=True, null=True,)
     def __str__(self):
         return self.name
 

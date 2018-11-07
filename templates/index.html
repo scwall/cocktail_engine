@@ -42,7 +42,6 @@
             <div class="row">
                 <div class="col-md-11 .offset-md-1">
                     <div class="jumbotron jumbotron-main text-center" style="padding-top: 1rem">
-
                         <img class=" d-block m-auto" src="{% if cocktail.image|length > 0 %}{{ cocktail.image.url }}
                                 {% else %}{{ MEDIA_URL }}{{ '/cocktail_picture/default.png' }} {% endif %}"
                              width="80rem" height="80rem">
@@ -62,7 +61,7 @@
     </div>
     <footer class="fixed-bottom">
         <div class="row justify-content-end">
-            <div class="col-auto offset-md-0"><a href="{% url "engine:cocktailEngineAdmin" %}"><i class="far fa-sun"
+            <div class="col-auto offset-md-0"><a href="{% url "engine:bottleEngineAdmin" %}"><i class="far fa-sun"
                                                                                               style="font-size: 62px;padding-right: 0.5rem;color: rgb(230,201,116);"></i></a>
             </div>
         </div>

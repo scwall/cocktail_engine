@@ -48,6 +48,7 @@
 
   $(document).on('input', '.step', function() {
       this_step = $(this);
+      var this_initial_step = this_step.val();
       empty_object = $(this_step).attr('name');
       $.ajax({
           url: 'bottle-modify-parameter',
@@ -56,7 +57,7 @@
           datatype: 'json',
           success: function (empty) {
               if (empty.empty !== 'ok') {
-                  console.log('error')
+                  $(this_step).atrr('value',this_initial_step)
               }
           }
       });
