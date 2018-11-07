@@ -9,7 +9,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import ListView
 import json
 
-from engine.forms import BottleCreateForm, bottle_group, CocktailMakeForm
+from engine.forms import BottleCreateForm, BottleFormSet, CocktailMakeForm
 from engine.models import Cocktail, Bottle, Bottles_belongs_cocktails, SolenoidValve
 from .tasks import make_cocktail
 from celery.result import AsyncResult
@@ -69,7 +69,8 @@ def bottleEngineAdmin(request):
                 bottle = Bottle.objects.create(name=bottle_create_form.cleaned_data['name'],
                                                empty=bottle_create_form.cleaned_data['empty'],
                                                image=bottle_create_form.cleaned_data['image'],
-                                               solenoid_valve=SolenoidValve.objects.get(number=bottle_create_form.cleaned_data['solenoidValve']))
+                                               solenoid_valve=SolenoidValve.objects.get(
+                                                   number=bottle_create_form.cleaned_data['solenoidValve']))
                 bottle.save()
                 return HttpResponseRedirect(reverse('engine:bottleEngineAdmin'))
 
@@ -89,15 +90,28 @@ def bottleModifyParameter(request):
             solenoidValve = request.POST['solenoidValve']
             Bottle.objects.filter(solenoid_valve=solenoidValve).update(empty=empty)
             return JsonResponse({'empty': 'ok'})
-        if 'step' in request.POST.keys() and request.POST['step'] and 'solenoidValve' in request.POST.keys() and request.POST['solenoidValve']:
+        if 'step' in request.POST.keys() and request.POST['step'] and 'solenoidValve' in request.POST.keys() and \
+                request.POST['solenoidValve']:
             step = request.POST['step']
             solenoidValve = request.POST['solenoidValve']
             SolenoidValve.objects.filter(number=solenoidValve).update(step=step)
             return JsonResponse({'empty': 'ok'})
         return JsonResponse({'': ''})
+
+
 @csrf_exempt
 def cocktailEngineAdmin(request):
-
+    cocktails = Cocktail.objects.filter().all()
     cocktail_make_form = CocktailMakeForm()
-    context ={'bottle_group':bottle_group,'cocktail_make_form':cocktail_make_form}
-    return render(request,template_name='cocktail-engine-admin/cocktails.html',context=context)
+    if request.method == 'POST':
+        bottle_group = BottleFormSet(request.POST)
+        print(bottle_group.is_valid())
+        print(bottle_group.errors)
+        for bottle in bottle_group:
+            print(bottle.cleaned_data.get('bottle'))
+            print(bottle.cleaned_data.get('dose'))
+    else:
+        bottle_group = BottleFormSet()
+    context = {'bottle_group': bottle_group, 'cocktail_make_form': cocktail_make_form, 'cocktails': cocktails}
+
+    return render(request, template_name='cocktail-engine-admin/cocktails.html', context=context)

@@ -3,17 +3,17 @@ $(function () {
     responsive.css("display", "block");
     responsive.slick({
         dots: true,
-        infinite: true,
+        infinite: (responsive.attr("data-infinite").toLowerCase() === 'true'),
         speed: 300,
         arrows: false,
-        slidesToShow: 3,
-        slidesToScroll: 3,
+        slidesToShow: Number(responsive.attr("data-show")),
+        slidesToScroll: Number(responsive.attr("data-show")),
         responsive: [
             {
                 breakpoint: 1024,
                 settings: {
-                    slidesToShow: 3,
-                    slidesToScroll: 3,
+                    slidesToShow: Number(responsive.attr("data-show")),
+                    slidesToScroll: Number(responsive.attr("data-show")),
                     infinite: true,
                     dots: true
                 }
@@ -21,15 +21,15 @@ $(function () {
             {
                 breakpoint: 600,
                 settings: {
-                    slidesToShow: 2,
-                    slidesToScroll: 2
+                    slidesToShow: Number(responsive.attr("data-show")) - 1,
+                    slidesToScroll: Number(responsive.attr("data-show")) - 1
                 }
             },
             {
                 breakpoint: 480,
                 settings: {
-                    slidesToShow: 1,
-                    slidesToScroll: 1
+                    slidesToShow: Number(responsive.attr("data-show")) - 2,
+                    slidesToScroll: Number(responsive.attr("data-show")) - 2
                 }
             }
             // You can unslick at a given breakpoint now by adding:

@@ -1,17 +1,17 @@
 $(function () {
-var $makecocktail;
-$makecocktail = $('.makecocktail');
-$makecocktail.on('submit', function (e) {
-    e.preventDefault();
-    var text = this.cocktail_id.value;
-    console.log(text);
-    $.ajax({
-        url: 'make-cocktail',
-        type: 'POST',
-        data: {'cocktail_id': text},
-        datatype: 'json',
-        success: function (task_id) {
-            console.log(task_id);
+    var $makecocktail;
+    $makecocktail = $('.makecocktail');
+    $makecocktail.on('submit', function (e) {
+        e.preventDefault();
+        var text = this.cocktail_id.value;
+        console.log(text);
+        $.ajax({
+            url: 'make-cocktail',
+            type: 'POST',
+            data: {'cocktail_id': text},
+            datatype: 'json',
+            success: function (task_id) {
+                console.log(task_id);
                 var progressTimer,
                     progressbar = $("#progressbar"),
                     progressLabel = $(".progress-label"),
@@ -51,13 +51,13 @@ $makecocktail.on('submit', function (e) {
                 function progress() {
                     var val = progressbar.progressbar("value") || 0;
                     $.ajax({
-                                url: 'make-cocktail',
-                                type: 'POST',
-                                data: {'task_id': task_id.task_id},
-                                datatype: 'json', success: function (task_info) {
-                                    progressbar.progressbar("value",task_info.task_info)
-                                }
-                        });
+                        url: 'make-cocktail',
+                        type: 'POST',
+                        data: {'task_id': task_id.task_id},
+                        datatype: 'json', success: function (task_info) {
+                            progressbar.progressbar("value", task_info.task_info)
+                        }
+                    });
 
                     if (val <= 99) {
                         progressTimer = setTimeout(progress, 400);
@@ -74,9 +74,9 @@ $makecocktail.on('submit', function (e) {
                 }
 
 
-        }
+            }
 
 
+        });
     });
-});
 });

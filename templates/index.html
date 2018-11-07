@@ -37,7 +37,7 @@
         <div class="progress-label"></div>
         <div id="progressbar"></div>
     </div>
-    <div class="responsive">
+    <div class="responsive" data-infinite="true" data-show="3">
         {% for cocktail in cocktails %}
             <div class="row">
                 <div class="col-md-11 .offset-md-1">
@@ -49,7 +49,6 @@
                         <p class=" text-center m-auto">Description:{{ cocktail.description }}</p>
                         <form class="makecocktail" action="" method="post">
                             <input class=" question" type="hidden" name="cocktail_id" value="{{ cocktail.id }}"><br>
-
                             <button type="submit" class=" btn btn-primary d-block m-auto" formmethod="post">Faire le
                                 cocktails
                             </button>
@@ -62,7 +61,7 @@
     <footer class="fixed-bottom">
         <div class="row justify-content-end">
             <div class="col-auto offset-md-0"><a href="{% url "engine:bottleEngineAdmin" %}"><i class="far fa-sun"
-                                                                                              style="font-size: 62px;padding-right: 0.5rem;color: rgb(230,201,116);"></i></a>
+                                                                                                style="font-size: 62px;padding-right: 0.5rem;color: rgb(230,201,116);"></i></a>
             </div>
         </div>
 
