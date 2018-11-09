@@ -61,7 +61,7 @@ def bottleEngineAdmin(request):
             return HttpResponseRedirect(reverse('engine:bottleEngineAdmin'))
 
     if request.method == 'POST':
-        bottle_create_form = BottleCreateForm(request.POST)
+        bottle_create_form = BottleCreateForm(request.POST,request.FILES)
         # check whether it's valid:
         if bottle_create_form.is_valid():
             bottle = Bottle.objects.filter(solenoid_valve=bottle_create_form.cleaned_data['solenoidValve'])
@@ -103,15 +103,28 @@ def bottleModifyParameter(request):
 def cocktailEngineAdmin(request):
     cocktails = Cocktail.objects.filter().all()
     cocktail_make_form = CocktailMakeForm()
+    if request.method == 'GET':
+        if request.GET.get('deleteCocktail'):
+            deleteCocktail = request.GET.get('deleteCocktail')
+            Cocktail.objects.filter(id=deleteCocktail).delete()
+            return HttpResponseRedirect(reverse('engine:cocktailEngineAdmin'))
+
     if request.method == 'POST':
-        bottle_group = BottleFormSet(request.POST)
-        print(bottle_group.is_valid())
-        print(bottle_group.errors)
-        for bottle in bottle_group:
-            print(bottle.cleaned_data.get('bottle'))
-            print(bottle.cleaned_data.get('dose'))
+        bottle_form_set = BottleFormSet(request.POST)
+        cocktail_make_form = CocktailMakeForm(request.POST,request.FILES)
+
+        if cocktail_make_form.is_valid() and bottle_form_set.is_valid():
+            cocktail = Cocktail.objects.create(name=cocktail_make_form.cleaned_data.get('name'),
+                                               description=cocktail_make_form.cleaned_data.get('description'),
+                                               image=cocktail_make_form.cleaned_data.get('image'))
+
+            for bottle_data in bottle_form_set:
+                bottle = Bottle.objects.get(name=bottle_data.cleaned_data.get('bottle'))
+                bottles_belongs_cocktails = Bottles_belongs_cocktails(bottle=bottle,cocktail=cocktail,dose=bottle_data.cleaned_data.get('dose'))
+                bottles_belongs_cocktails.save()
+
     else:
-        bottle_group = BottleFormSet()
-    context = {'bottle_group': bottle_group, 'cocktail_make_form': cocktail_make_form, 'cocktails': cocktails}
+        bottle_form_set = BottleFormSet()
+    context = {'bottle_form_set': bottle_form_set, 'cocktail_make_form': cocktail_make_form, 'cocktails': cocktails}
 
     return render(request, template_name='cocktail-engine-admin/cocktails.html', context=context)

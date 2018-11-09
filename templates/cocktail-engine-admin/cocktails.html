@@ -15,9 +15,9 @@
                                  width="80rem" height="80rem">
                             <p class=" text-center m-auto">Nom: {{ cocktail.name }}</p>
                             <p class=" text-center m-auto">Description:{{ cocktail.description }}</p>
-                            <form class="makecocktail" action="" method="post">
-                                <input class=" question" type="hidden" name="cocktail_id" value="{{ cocktail.id }}"><br>
-                                <button type="submit" class="btn btn-danger d-block m-auto" formmethod="post">
+                            <form class="makecocktail" action="" method="get">
+                                <input class="question" type="hidden" name="deleteCocktail" value="{{ cocktail.id }}"><br>
+                                <button type="submit" class="btn btn-danger d-block m-auto" formmethod="get">
                                     Supprimer le cocktail
                                 </button>
                             </form>
@@ -30,15 +30,15 @@
                     <div class="jumbotron jumbotron-main text-center">
                         <h1>Ajouter un Cocktail</h1><br>
                         <div class="entry">
-                            <form class="form" method="post" action="{% url 'engine:cocktailEngineAdmin' %}">
-                                {% for form in bottle_group.forms %}
-                                    <div id="{{ form.prefix }}-row">
-                                        <p> {{ form.bottle.label_tag }} {{ form.bottle }} {{ form.dose.label_tag }} {{ form.dose }}
+                            <form class="form" enctype="multipart/form-data" method="post" action="{% url 'engine:cocktailEngineAdmin' %}">
+                                {% for form_set in bottle_form_set.forms %}
+                                    <div id="{{ form_set.prefix }}-row">
+                                        <p> {{ form_set.bottle.label_tag }} {{ form_set.bottle }} {{ form_set.dose.label_tag }} {{ form_set.dose }}
                                     </div>
                                 {% endfor %}
                                 {{ cocktail_make_form.as_p }}
                                 <p>
-                                    {{ bottle_group.management_form }}
+                                    {{ bottle_form_set.management_form }}
                                     <input class="btn btn-primary" type="submit" value="Ajouter">
                                 </p>
 

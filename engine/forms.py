@@ -20,6 +20,7 @@ class BottleChooseForm(forms.Form):
 
 class CocktailMakeForm(forms.Form):
     name = forms.CharField(label="Nom:", max_length=80)
+    description = forms.CharField(label='Description',widget=forms.Textarea(attrs={'rows':3, 'cols':30}),required=False)
     image = forms.ImageField(label='Ajouter une image:', required=False)
 
 
