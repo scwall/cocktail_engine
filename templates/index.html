@@ -4,7 +4,8 @@
 {% block content %}
 
     <nav class="navbar navbar-light navbar-expand-md navigation-clean-search">
-        <div class="container"><a class="navbar-brand" href="#">Cocktails Engine&nbsp;</a>
+        <div class="container"><a class="navbar-brand" href="{% url 'engine:cocktailViews' %}">Cocktails
+            Engine&nbsp;</a>
             <button class="navbar-toggler" data-toggle="collapse" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span
                     class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse"
@@ -12,15 +13,12 @@
                 <ul class="nav navbar-nav">
                     <li class="dropdown"><a class="dropdown-toggle nav-link dropdown-toggle" data-toggle="dropdown"
                                             aria-expanded="false" href="#">Cocktail par bouteilles&nbsp;</a>
-                        <div class="dropdown-menu" role="menu"><a class="dropdown-item" role="presentation"
-                                                                  href="#">Vodka</a><a class="dropdown-item"
-                                                                                       role="presentation" href="#">Tequila</a><a
-                                class="dropdown-item" role="presentation" href="#">Wisky</a><a class="dropdown-item"
-                                                                                               role="presentation"
-                                                                                               href="#">Coca-cola</a><a
-                                class="dropdown-item" role="presentation" href="#">Gin</a><a class="dropdown-item"
-                                                                                             role="presentation"
-                                                                                             href="#">Schweppes</a>
+                        <div class="dropdown-menu" role="menu">
+                            {% for bottle in bottles %}
+                                <a class="dropdown-item" role="presentation"
+                                   href="{% url 'engine:cocktailViews' %}?bottle={{ bottle.id }}">{{ bottle.name }}</a>
+                            {% endfor %}
+
                         </div>
                     </li>
                 </ul>

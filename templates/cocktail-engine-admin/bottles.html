@@ -31,6 +31,7 @@
                 <div class="col-md-4">
                     <div class="jumbotron">
                         <h1>Bouteille N°{{ forloop.counter }}</h1>
+                        <div class="form-group">
                         <form action="{% url 'engine:bottleEngineAdmin' %}" method="post" enctype="multipart/form-data">
                             <div class="form-group">
                                 {{ bottle_create_form.as_p }}
@@ -40,6 +41,7 @@
                                 <input class="btn btn-primary"  type="submit" value="Ajouter">
                             </div>
                         </form>
+                        </div>
                     </div>
                 </div>
             {% endif %}
@@ -58,5 +60,4 @@
 {% endblock %}
 {% block javascript %}
     <script src="{% static 'assets/js/bottleAdmin.js' %}"></script>
-
 {% endblock %}

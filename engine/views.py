@@ -15,15 +15,21 @@ from .tasks import make_cocktail
 from celery.result import AsyncResult
 from django import template
 
-register = template.Library()
-
 
 # cocktail Views is main view
 
 @csrf_exempt
 def cocktailViews(request):
     cocktails = Cocktail.objects.all().order_by('id')
-    context = {'title': 'Liste des cocktails', 'cocktails': cocktails, }
+    bottles = Bottle.objects.all().order_by('name')
+
+    if request.method == "GET":
+        if request.GET.get('bottle'):
+            bottle = request.GET.get('bottle')
+            cocktails = Cocktail.objects.filter(bottles_belongs_cocktails__bottle_id=bottle)
+
+    context = {'title': 'Liste des cocktails', 'cocktails': cocktails, 'bottles': bottles}
+
     return render(request, template_name='index.html', context=context)
 
 
@@ -61,7 +67,7 @@ def bottleEngineAdmin(request):
             return HttpResponseRedirect(reverse('engine:bottleEngineAdmin'))
 
     if request.method == 'POST':
-        bottle_create_form = BottleCreateForm(request.POST,request.FILES)
+        bottle_create_form = BottleCreateForm(request.POST, request.FILES)
         # check whether it's valid:
         if bottle_create_form.is_valid():
             bottle = Bottle.objects.filter(solenoid_valve=bottle_create_form.cleaned_data['solenoidValve'])
@@ -111,7 +117,7 @@ def cocktailEngineAdmin(request):
 
     if request.method == 'POST':
         bottle_form_set = BottleFormSet(request.POST)
-        cocktail_make_form = CocktailMakeForm(request.POST,request.FILES)
+        cocktail_make_form = CocktailMakeForm(request.POST, request.FILES)
 
         if cocktail_make_form.is_valid() and bottle_form_set.is_valid():
             cocktail = Cocktail.objects.create(name=cocktail_make_form.cleaned_data.get('name'),
@@ -120,7 +126,8 @@ def cocktailEngineAdmin(request):
 
             for bottle_data in bottle_form_set:
                 bottle = Bottle.objects.get(name=bottle_data.cleaned_data.get('bottle'))
-                bottles_belongs_cocktails = Bottles_belongs_cocktails(bottle=bottle,cocktail=cocktail,dose=bottle_data.cleaned_data.get('dose'))
+                bottles_belongs_cocktails = Bottles_belongs_cocktails(bottle=bottle, cocktail=cocktail,
+                                                                      dose=bottle_data.cleaned_data.get('dose'))
                 bottles_belongs_cocktails.save()
 
     else:
