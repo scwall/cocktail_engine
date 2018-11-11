@@ -40,12 +40,22 @@ def makeCocktail(request):
         if 'cocktail_id' in request.POST.keys() and request.POST['cocktail_id']:
             cocktail_id = request.POST['cocktail_id']
             cocktail = Cocktail.objects.get(id=cocktail_id)
-            for bottle in cocktail.bottles.all():
-                
-                print(bottle.name, " ", Bottles_belongs_cocktails.objects.get(bottle=bottle.id, cocktail=cocktail.id))
-            dict_execute_cocktail = {'step': 1, 'solenoidValve': 2}
-            task = make_cocktail.delay(dict_execute_cocktail)
-            return JsonResponse({'task_id': task.id})
+            if cocktail.bottles.filter(empty=True):
+                print('error')
+                return JsonResponse({'task_id': 'error'})
+
+
+            else:
+                list_execute_cocktail = [{'step': SolenoidValve.objects.get(number=bottle.solenoid_valve_id).step,
+                                          'solenoidvalve': bottle.solenoid_valve_id,
+                                          'dose': Bottles_belongs_cocktails.objects.get(bottle=bottle.id,
+                                                                                        cocktail=cocktail.id).dose}
+                                         for bottle in cocktail.bottles.all()]
+                print(list_execute_cocktail)
+                task = make_cocktail.delay(list_execute_cocktail)
+                return JsonResponse({'task_id': task.id})
+
+
 
         if 'task_id' in request.POST.keys() and request.POST['task_id']:
             task_id = request.POST['task_id']
