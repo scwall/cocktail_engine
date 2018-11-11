@@ -41,6 +41,7 @@ def makeCocktail(request):
             cocktail_id = request.POST['cocktail_id']
             cocktail = Cocktail.objects.get(id=cocktail_id)
             for bottle in cocktail.bottles.all():
+                
                 print(bottle.name, " ", Bottles_belongs_cocktails.objects.get(bottle=bottle.id, cocktail=cocktail.id))
             dict_execute_cocktail = {'step': 1, 'solenoidValve': 2}
             task = make_cocktail.delay(dict_execute_cocktail)
