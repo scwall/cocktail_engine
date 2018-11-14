@@ -18,7 +18,6 @@ from django import template
 
 # cocktail Views is main view
 
-@csrf_exempt
 def cocktailViews(request):
     cocktails = Cocktail.objects.all().order_by('id')
     bottles = Bottle.objects.all().order_by('name')
@@ -34,7 +33,7 @@ def cocktailViews(request):
 
 
 # makeCocktail serve for create asyncronious task, and send in jquery script for the progression bar
-@csrf_exempt
+
 def makeCocktail(request):
     if request.is_ajax():
         if 'cocktail_id' in request.POST.keys() and request.POST['cocktail_id']:

@@ -3,58 +3,63 @@
 {% block content %}
     {% include 'cocktail-engine-admin/navbar.html' %}
     <div style="margin-top: 10rem;">
-    <div class="container">
-    <div class="row">
-        {% for valve in bottles %}
-            {% if valve.bottle %}
-                <div class="col-md-4">
-                    <div class="jumbotron">
-                        <h1>Bouteille N°{{ valve.number }}</h1>
-                        <img src="{% if valve.bottle.image|length > 0 %}{{ valve.bottle.image.url }}
+        <div class="container">
+            <div class="row">
+                {% for valve in bottles %}
+                    {% if valve.bottle %}
+                        <div class="col-md-6">
+                            <div class="jumbotron">
+                                <h1>Bouteille N°{{ valve.number }}</h1>
+                                <img src="{% if valve.bottle.image|length > 0 %}{{ valve.bottle.image.url }}
                                 {% else %}{{ MEDIA_URL }}{{ '/bottle_picture/default.jpg' }} {% endif %}"
-                             width="150rem" height="150rem">
-                        <p>Nom: {{ valve.bottle.name }}</p>
-                        <label for="step_{{ valve.number }}">Positionnement: </label>
-                        <input type="number" class="step" id="step_{{ valve.number }}" name="{{ valve.number}}" min="1" max="400"
-                               value="{{ valve.step }}"><br>
-                        <label for="empty_{{ valve.number }}">Vide: </label>
-                        <input type="checkbox" id="empty_{{ valve.number }}" name="{{valve.number}}" class="empty"
-                                {% if valve.bottle.empty %}
-                               checked {% endif %}> <br>
-                        <form action="{% url 'engine:bottleEngineAdmin' %}" method="get">
-                            <button class="btn btn-danger">Supprimer</button>
-                            <input type="hidden" name="deleteBottle" value="{{ valve.bottle.id }}">
-                        </form>
-                    </div>
-                </div>
-            {% else %}
-                <div class="col-md-4">
-                    <div class="jumbotron">
-                        <h1>Bouteille N°{{ forloop.counter }}</h1>
-                        <div class="form-group">
-                        <form action="{% url 'engine:bottleEngineAdmin' %}" method="post" enctype="multipart/form-data">
-                            <div class="form-group">
-                                {{ bottle_create_form.as_p }}
-                                <input type="hidden" id="create_solenoidValve_{{ forloop.counter }}" name="solenoidValve"
-                                       value="{{ forloop.counter }}">
-                                <input type="hidden" id="create_step_{{ forloop.counter }}" name="step" value="{{ valve.step }}">
-                                <input class="btn btn-primary"  type="submit" value="Ajouter">
+                                     width="150rem" height="150rem">
+                                <p>Nom: {{ valve.bottle.name }}</p>
+                                <label for="step_{{ valve.number }}">Positionnement: </label>
+                                <input type="number" class="step" id="step_{{ valve.number }}" name="{{ valve.number }}"
+                                       min="1" max="400"
+                                       value="{{ valve.step }}"><br>
+                                <label for="empty_{{ valve.number }}">Vide: </label>
+                                <input type="checkbox" id="empty_{{ valve.number }}" name="{{ valve.number }}"
+                                       class="empty"
+                                        {% if valve.bottle.empty %}
+                                       checked {% endif %}> <br>
+                                <form action="{% url 'engine:bottleEngineAdmin' %}" method="get">
+                                    <button class="btn btn-danger">Supprimer</button>
+                                    <input type="hidden" name="deleteBottle" value="{{ valve.bottle.id }}">
+                                </form>
                             </div>
-                        </form>
                         </div>
-                    </div>
+                    {% else %}
+                        <div class="col-md-6">
+                            <div class="jumbotron">
+                                <h1>Bouteille N°{{ forloop.counter }}</h1>
+                                <div class="form-group">
+                                    <form action="{% url 'engine:bottleEngineAdmin' %}" method="post"
+                                          enctype="multipart/form-data">
+                                        <div class="form-group">
+                                            {{ bottle_create_form.as_p }}
+                                            <input type="hidden" id="create_solenoidValve_{{ forloop.counter }}"
+                                                   name="solenoidValve"
+                                                   value="{{ forloop.counter }}">
+                                            <input type="hidden" id="create_step_{{ forloop.counter }}" name="step"
+                                                   value="{{ valve.step }}">
+                                            <input class="btn btn-primary" type="submit" value="Ajouter">
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    {% if forloop.counter|divisibleby:2 %}
+                        </div>
+                        <div class="row" style="margin-top: 5rem;">
+
+                    {% endif %}
+
+                {% endfor %}
                 </div>
-            {% endif %}
-
-            {% if bottle_number == 3 %}
-                </div>
-                <div class="row" style="margin-top: 5rem;">
-
-            {% endif %}
-
-        {% endfor %}
         </div>
-    </div>
     </div>
 
 {% endblock %}
