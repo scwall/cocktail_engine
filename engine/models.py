@@ -1,12 +1,11 @@
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 
-
-# Create your models here.
 class SolenoidValve(models.Model):
     number = models.IntegerField(validators=[MinValueValidator(1),
                                              MaxValueValidator(6)])
     step = models.IntegerField()
+
 
 
 class Bottle(models.Model):
