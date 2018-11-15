@@ -31,6 +31,12 @@ $(function () {
                             open: function () {
                                 progressTimer = setTimeout(progress, 2000);
                             },
+                            close: function () {
+
+                                $("#dialog").dialog('destroy');
+                                $(".progress-label").remove();
+                                $('#annulate').remove();
+                            }
 
                         });
 
@@ -68,10 +74,11 @@ $(function () {
 
                     function closeDownload() {
                         clearTimeout(progressTimer);
-                        dialog.dialog("close");
                         progressbar.progressbar("value", false);
-                        progressLabel
-                            .text("Annuler le cocktail");
+                        progressbar.progressbar("destroy");
+                        $(this).append("<p id='annulate'>Cocktail annulé</p>");
+                        $('.ui-dialog-buttonpane button:contains("Annuler le cocktail")').button().hide();
+
 
                     }
 
@@ -79,16 +86,21 @@ $(function () {
                 }
                 else {
                     dialog = $("#dialog").dialog({
-                            autoOpen: false,
-                            closeOnEscape: false,
-                            resizable: false,
-                            modal: true,
-                            autocomplete: true,
-                            open: function() {
-                              var markup = 'Erreur : Une bouteille est vide';
-                              $(this).html(markup);}
+                        autoOpen: false,
+                        closeOnEscape: false,
+                        resizable: false,
+                        modal: true,
+                        autocomplete: true,
+                        open: function () {
+                            $(this).append("<p id='error'>Impossible de faire le cocktail</p>");
 
-                        });
+                        },
+                        close: function () {
+                            $('#error').remove();
+                            $("#dialog").dialog('destroy');
+                        }
+
+                    });
                     dialog.dialog("open");
 
                 }
