@@ -17,7 +17,7 @@ from django import template
 
 
 # cocktail Views is main view
-
+@csrf_exempt
 def cocktailViews(request):
     cocktails = Cocktail.objects.all().order_by('id')
     bottles = Bottle.objects.all().order_by('name')
@@ -33,14 +33,18 @@ def cocktailViews(request):
 
 
 # makeCocktail serve for create asyncronious task, and send in jquery script for the progression bar
-
+@csrf_exempt
 def makeCocktail(request):
     if request.is_ajax():
         if 'cocktail_id' in request.POST.keys() and request.POST['cocktail_id']:
             cocktail_id = request.POST['cocktail_id']
             cocktail = Cocktail.objects.get(id=cocktail_id)
-            if cocktail.bottles.filter(empty=True):
-                print('error')
+            if not cocktail.bottles.all():
+                print('cocktail : ', cocktail.bottles.all())
+            if not cocktail.bottles.filter(empty=False):
+                print('bottle: ', cocktail.bottles.filter(empty=True))
+
+            if cocktail.bottles.filter(empty=True) or not cocktail.bottles.all():
                 return JsonResponse({'task_id': 'error'})
 
 
@@ -50,11 +54,9 @@ def makeCocktail(request):
                                           'dose': Bottles_belongs_cocktails.objects.get(bottle=bottle.id,
                                                                                         cocktail=cocktail.id).dose}
                                          for bottle in cocktail.bottles.all()]
-                print(list_execute_cocktail)
+                print('execute ', list_execute_cocktail)
                 task = make_cocktail.delay(list_execute_cocktail)
                 return JsonResponse({'task_id': task.id})
-
-
 
         if 'task_id' in request.POST.keys() and request.POST['task_id']:
             task_id = request.POST['task_id']
