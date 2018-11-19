@@ -22,15 +22,15 @@
                         </div>
                     </li>
                 </ul>
-                <form class="form-inline mr-auto" target="_self">
+                <form class="form-inline mr-auto" target="{% url 'engine:cocktailViews' %}">
                     <div class="form-group"><label for="search-field"><i class="fa fa-search"></i></label><input
-                            class="form-control search-field" type="search" name="search" id="search-field"
+                            class="form-control search-field" type="search" name="name" id="search-field"
                             style="width: 9rem;"></div>
+                    <button type="submit" class="btn btn-light action-button">Rechercher</button>
                 </form>
-                <a class="btn btn-light action-button" role="button" href="#">Rechercher</a></div>
+            </div>
         </div>
     </nav>
-
     <div id="dialog" title="Fabrication du cocktail">
         <div class="progress-label"></div>
         <div id="progressbar"></div>
@@ -39,7 +39,7 @@
         {% for cocktail in cocktails %}
             <div class="row">
                 <div class="col-md-11 .offset-md-1">
-                    <div class="jumbotron jumbotron-main text-center" style="padding-top: 1rem">
+                    <div id="{{ cocktail.name }}" class="jumbotron jumbotron-main text-center" style="padding-top: 1rem">
                         <img class=" d-block m-auto" src="{% if cocktail.image|length > 0 %}{{ cocktail.image.url }}
                                 {% else %}{{ MEDIA_URL }}{{ '/cocktail_picture/default.png' }} {% endif %}"
                              width="80rem" height="80rem">

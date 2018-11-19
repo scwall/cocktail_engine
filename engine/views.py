@@ -17,15 +17,17 @@ from django import template
 
 
 # cocktail Views is main view
-@csrf_exempt
-def cocktailViews(request):
-    cocktails = Cocktail.objects.all().order_by('id')
-    bottles = Bottle.objects.all().order_by('name')
 
+def cocktailViews(request):
+    bottles = Bottle.objects.all().order_by('name')
+    cocktails = Cocktail.objects.all().order_by('id')
     if request.method == "GET":
         if request.GET.get('bottle'):
             bottle = request.GET.get('bottle')
             cocktails = Cocktail.objects.filter(bottles_belongs_cocktails__bottle_id=bottle)
+        if request.GET.get('name'):
+            name = request.GET.get('name')
+            cocktails = Cocktail.objects.filter(name__icontains=name)
 
     context = {'title': 'Liste des cocktails', 'cocktails': cocktails, 'bottles': bottles}
 
@@ -33,7 +35,7 @@ def cocktailViews(request):
 
 
 # makeCocktail serve for create asyncronious task, and send in jquery script for the progression bar
-@csrf_exempt
+
 def makeCocktail(request):
     if request.is_ajax():
         if 'cocktail_id' in request.POST.keys() and request.POST['cocktail_id']:
@@ -68,7 +70,6 @@ def makeCocktail(request):
             return JsonResponse({'task_info': task_info})
 
 
-@csrf_exempt
 def bottleEngineAdmin(request):
     valves = SolenoidValve.objects.all().order_by('number')
 
@@ -99,7 +100,6 @@ def bottleEngineAdmin(request):
     return render(request, template_name='cocktail-engine-admin/bottles.html', context=context)
 
 
-@csrf_exempt
 def bottleModifyParameter(request):
     if request.is_ajax():
         if 'empty' in request.POST.keys() and request.POST['empty'] and 'solenoidValve' in request.POST.keys() and \
@@ -117,7 +117,6 @@ def bottleModifyParameter(request):
         return JsonResponse({'': ''})
 
 
-@csrf_exempt
 def cocktailEngineAdmin(request):
     cocktails = Cocktail.objects.filter().all()
     cocktail_make_form = CocktailMakeForm()

@@ -36,6 +36,7 @@
                                 <div class="form-group">
                                     <form action="{% url 'engine:bottleEngineAdmin' %}" method="post"
                                           enctype="multipart/form-data">
+                                        {% csrf_token %}
                                         <div class="form-group">
                                             {{ bottle_create_form.as_p }}
                                             <input type="hidden" id="create_solenoidValve_{{ forloop.counter }}"

@@ -33,6 +33,7 @@
                         <div class="entry">
                             <form class="form" enctype="multipart/form-data" method="post"
                                   action="{% url 'engine:cocktailEngineAdmin' %}">
+                                {% csrf_token %}
                                 {% for form_set in bottle_form_set.forms %}
                                     <div id="{{ form_set.prefix }}-row">
                                         <p> {{ form_set.bottle.label_tag }} {{ form_set.bottle }} {{ form_set.dose.label_tag }} {{ form_set.dose }}
