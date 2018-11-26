@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/2.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.1/ref/settings/
 """
+import sys
 
 import os
 
@@ -30,7 +31,7 @@ SECRET_KEY = '+g2!jv3n$*pv7zprsc15q(xb))bv0zki1y@h+f30$*+k0%4z5v'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["192.168.1.81","127.0.0.1"]
+ALLOWED_HOSTS = ["192.168.1.81", "127.0.0.1"]
 
 # Application definition
 
@@ -78,6 +79,7 @@ WSGI_APPLICATION = 'cocktail_engine.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
+# Create temporary database for test
 
 DATABASES = {
     'default': {
@@ -89,7 +91,11 @@ DATABASES = {
         'PORT': '5432',
     }
 }
-
+if 'test' in sys.argv:
+    DATABASES['default'] = {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'datatest'
+    }
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
 
@@ -129,3 +135,5 @@ STATIC_URL = '/static/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 MEDIA_URL = '/media/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+NOSE_ARGS = ['--nocapture',
+             '--nologcapture', ]

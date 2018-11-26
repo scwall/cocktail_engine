@@ -33,3 +33,4 @@ def make_cocktail(dict):
         })
     time.sleep(10)
     return {'total': 100}
+

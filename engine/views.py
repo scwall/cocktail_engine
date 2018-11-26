@@ -76,6 +76,7 @@ def bottleEngineAdmin(request):
     if request.method == 'GET':
         if request.GET.get('deleteBottle'):
             delete_bottle = request.GET.get('deleteBottle')
+            Cocktail.objects.filter(bottles_belongs_cocktails__bottle_id=delete_bottle).delete()
             Bottle.objects.filter(id=delete_bottle).delete()
             return HttpResponseRedirect(reverse('engine:bottleEngineAdmin'))
 
