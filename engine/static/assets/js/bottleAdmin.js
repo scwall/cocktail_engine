@@ -56,7 +56,7 @@ $(function () {
             data: {'step': this_step.val(), 'solenoidValve': empty_object},
             datatype: 'json',
             success: function (empty) {
-                if (empty.empty !== 'ok') {
+                if (empty.step !== 'ok') {
                     $(this_step).atrr('value', this_initial_step)
                 }
             }

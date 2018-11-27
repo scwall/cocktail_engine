@@ -41,10 +41,6 @@ def makeCocktail(request):
         if 'cocktail_id' in request.POST.keys() and request.POST['cocktail_id']:
             cocktail_id = request.POST['cocktail_id']
             cocktail = Cocktail.objects.get(id=cocktail_id)
-            if not cocktail.bottles.all():
-                print('cocktail : ', cocktail.bottles.all())
-            if not cocktail.bottles.filter(empty=False):
-                print('bottle: ', cocktail.bottles.filter(empty=True))
 
             if cocktail.bottles.filter(empty=True) or not cocktail.bottles.all():
                 return JsonResponse({'task_id': 'error'})
@@ -107,14 +103,15 @@ def bottleModifyParameter(request):
                 request.POST['solenoidValve']:
             empty = (lambda boolean: True if 'true' == boolean else False)(request.POST['empty'])
             solenoidValve = request.POST['solenoidValve']
-            Bottle.objects.filter(solenoid_valve=solenoidValve).update(empty=empty)
+            Bottle.objects.filter(solenoid_valve__number=solenoidValve).update(empty=empty)
+
             return JsonResponse({'empty': 'ok'})
         if 'step' in request.POST.keys() and request.POST['step'] and 'solenoidValve' in request.POST.keys() and \
                 request.POST['solenoidValve']:
             step = request.POST['step']
             solenoidValve = request.POST['solenoidValve']
             SolenoidValve.objects.filter(number=solenoidValve).update(step=step)
-            return JsonResponse({'empty': 'ok'})
+            return JsonResponse({'step': 'ok'})
         return JsonResponse({'': ''})
 
 

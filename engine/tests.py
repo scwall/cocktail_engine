@@ -1,3 +1,7 @@
+import json
+
+import tempfile
+from PIL import Image
 from django.test import TestCase
 
 import signal
@@ -18,7 +22,6 @@ from selenium import webdriver
 from requestium import Session, Keys
 from engine.models import Bottle, SolenoidValve, Cocktail, Bottles_belongs_cocktails
 
-
 class CocktailEngineTest(LiveServerTestCase):
     def setUp(self):
         options = webdriver.ChromeOptions()
@@ -38,20 +41,27 @@ class CocktailEngineTest(LiveServerTestCase):
         bottle_one = Bottle.objects.create(id=1, name='bottle1', solenoid_valve_id=1)
         bottle_two = Bottle.objects.create(id=2, name='bottle2', solenoid_valve_id=2)
         bottle_three = Bottle.objects.create(id=3, name='bottle3', solenoid_valve_id=3)
-        bottle_four = Bottle.objects.create(id=4, name='bottle4', solenoid_valve_id=4)
+        bottle_four = Bottle.objects.create(id=4, name='bottle4', solenoid_valve_id=4,empty=True)
         bottle_five = Bottle.objects.create(id=5, name='bottle5', solenoid_valve_id=5)
         bottle_six = Bottle.objects.create(id=6, name='bottle6', solenoid_valve_id=6)
         cocktail_one = Cocktail.objects.create(id=1, name="cocktailone", description='cocktail one description')
         cocktail_two = Cocktail.objects.create(id=2, name="cocktailtwo", description='cocktail two description')
+        cocktail_three =  Cocktail.objects.create(id=3, name="cocktailthree", description='cocktail three description')
         Bottles_belongs_cocktails(bottle=bottle_one, cocktail=cocktail_one,
                                   dose=1).save()
         Bottles_belongs_cocktails(bottle=bottle_two, cocktail=cocktail_two,
                                   dose=2).save()
         Bottles_belongs_cocktails(bottle=bottle_three, cocktail=cocktail_two,
                                   dose=3).save()
+        Bottles_belongs_cocktails(bottle=bottle_four, cocktail=cocktail_three,
+                                  dose=4).save()
+        Bottles_belongs_cocktails(bottle=bottle_five, cocktail=cocktail_three,
+                                  dose=4).save()
 
         self.client = Client()
-
+    def tearDown(self):
+        self.browser.driver.close()
+        self.browser.close()
     def test_solenoidValve(self):
         solenoid_valve = SolenoidValve.objects.get(number=1)
         self.assertEqual(solenoid_valve.step, 10)
@@ -67,7 +77,8 @@ class CocktailEngineTest(LiveServerTestCase):
         self.assertEqual(bottle.bottle_id, 1)
         self.assertEqual(bottle.bottle_detail, 'bottle1')
         self.assertEqual(cocktail.cocktail_detail, 'cocktailone')
-        self.assertEqual(cocktail.dose, 1)
+        self.assertEqual(cocktail.dose_detail, '1')
+        self.assertEqual(str(cocktail),'1')
 
     def test_cocktail(self):
         cocktail = Cocktail.objects.get(name="cocktailone")
@@ -103,7 +114,45 @@ class CocktailEngineTest(LiveServerTestCase):
             "innerText")
         self.assertEqual(cocktail, 'Nom: cocktailtwo')
 
-    def test_admin_bottle(self):
+    def test_view_make_cocktail(self):
         response = self.client.post(self.live_server_url + reverse('engine:makeCocktail'), {"cocktail_id": "1"},
                                     **{'HTTP_X_REQUESTED_WITH': 'XMLHttpRequest'})
+        response_json = json.loads(response.content.decode('utf-8'))
         self.assertEqual(response.status_code, 200)
+        self.assertNotEqual(response_json['task_id'],'error')
+        response = self.client.post(self.live_server_url + reverse('engine:makeCocktail'), {"task_id": response_json['task_id']},
+                                    **{'HTTP_X_REQUESTED_WITH': 'XMLHttpRequest'})
+        response_json = json.loads(response.content.decode('utf-8'))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response_json['task_info'], 0)
+        response = self.client.post(self.live_server_url + reverse('engine:makeCocktail'), {"cocktail_id": "3"},
+                                    **{'HTTP_X_REQUESTED_WITH': 'XMLHttpRequest'})
+        response_json = json.loads(response.content.decode('utf-8'))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response_json['task_id'], 'error')
+    def test_bottle_admin(self):
+
+        self.browser.driver.get(self.live_server_url + reverse('engine:bottleEngineAdmin'))
+        bottle = self.browser.driver.find_element_by_id('bottle_6').find_element_by_tag_name('p').get_attribute("innerText")
+        self.assertEqual(bottle,'Nom: bottle6')
+        response = self.client.get(self.live_server_url + reverse('engine:bottleEngineAdmin') +'?deleteBottle=6')
+        self.assertEqual(response.status_code, 302)
+
+        self.client.post(self.live_server_url + reverse('engine:bottleEngineAdmin'),{'solenoidValve':6,'name':'bottle7','empty':'False'})
+        self.assertEqual(response.status_code, 302)
+        self.browser.driver.get(self.live_server_url + reverse('engine:bottleEngineAdmin'))
+        bottle = self.browser.driver.find_element_by_id('bottle_6').find_element_by_tag_name('p').get_attribute("innerText")
+        self.assertEqual(bottle,'Nom: bottle7')
+    def test_bottle_admin_modify_bottle(self):
+        response = self.client.post(self.live_server_url + reverse('engine:bottleModifyParameter'),
+                                    {"step":61,"solenoidValve":6},
+                                    **{'HTTP_X_REQUESTED_WITH': 'XMLHttpRequest'})
+        self.assertEqual(response.status_code, 200)
+        solenoid_valve = SolenoidValve.objects.get(id=6)
+        self.assertEqual(solenoid_valve.step,61)
+        self.client.post(self.live_server_url + reverse('engine:bottleModifyParameter'),
+                                    {"empty": 'true', "solenoidValve": 6},
+                                    **{'HTTP_X_REQUESTED_WITH': 'XMLHttpRequest'})
+        bottle= Bottle.objects.get(solenoid_valve__number=6)
+        self.assertTrue(bottle.empty,True)
+

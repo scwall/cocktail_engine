@@ -7,7 +7,7 @@ from .models import Bottle
 class BottleCreateForm(forms.Form):
     name = forms.CharField(label="Nom:", max_length=80, widget=forms.TextInput(attrs={'style': 'width:8rem'}))
     solenoidValve = forms.IntegerField(label='Valve:', min_value=1, max_value=6, widget=forms.HiddenInput())
-    step = forms.IntegerField(label='Position:', widget=forms.HiddenInput())
+    # step = forms.IntegerField(label='Position:', widget=forms.HiddenInput())
     empty = forms.BooleanField(label='Vide:', initial=False, required=False)
     image = forms.ImageField(label='Ajouter une image:', required=False, )
 

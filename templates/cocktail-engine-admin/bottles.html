@@ -7,8 +7,8 @@
             <div class="row">
                 {% for valve in bottles %}
                     {% if valve.bottle %}
-                        <div class="col-md-6">
-                            <div class="jumbotron">
+                        <div class="col-md-6" >
+                            <div class="jumbotron" id="bottle_{{ valve.number }}">
                                 <h1>Bouteille N°{{ valve.number }}</h1>
                                 <img src="{% if valve.bottle.image|length > 0 %}{{ valve.bottle.image.url }}
                                 {% else %}{{ MEDIA_URL }}{{ '/bottle_picture/default.jpg' }} {% endif %}"
@@ -42,8 +42,8 @@
                                             <input type="hidden" id="create_solenoidValve_{{ forloop.counter }}"
                                                    name="solenoidValve"
                                                    value="{{ forloop.counter }}">
-                                            <input type="hidden" id="create_step_{{ forloop.counter }}" name="step"
-                                                   value="{{ valve.step }}">
+{#                                            <input type="hidden" id="create_step_{{ forloop.counter }}" name="step"#}
+{#                                                   value="{{ valve.step }}">#}
                                             <input class="btn btn-primary" type="submit" value="Ajouter">
                                         </div>
                                     </form>
