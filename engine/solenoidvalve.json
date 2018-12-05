@@ -4,7 +4,9 @@
   "pk": 1,
   "fields": {
     "number": 1,
-    "step": 1
+    "step": 1,
+    "first_pin": 7,
+    "second_pin": 6
   }
 },
 {
@@ -12,7 +14,9 @@
   "pk": 2,
   "fields": {
     "number": 2,
-    "step": 2
+    "step": 2,
+    "first_pin": 7,
+    "second_pin": 6
   }
 },
 {
@@ -20,7 +24,9 @@
   "pk": 3,
   "fields": {
     "number": 3,
-    "step": 3
+    "step": 3,
+    "first_pin": 7,
+    "second_pin": 6
   }
 },
 {
@@ -28,7 +34,9 @@
   "pk": 4,
   "fields": {
     "number": 4,
-    "step": 4
+    "step": 4,
+    "first_pin": 7,
+    "second_pin": 6
   }
 },
 {
@@ -36,7 +44,9 @@
   "pk": 5,
   "fields": {
     "number": 5,
-    "step": 5
+    "step": 5,
+    "first_pin": 7,
+    "second_pin": 6
   }
 },
 {
@@ -44,7 +54,9 @@
   "pk": 6,
   "fields": {
     "number": 6,
-    "step": 6
+    "step": 6,
+    "first_pin": 7,
+    "second_pin": 6
   }
 }
 ]

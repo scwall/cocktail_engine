@@ -5,6 +5,8 @@ class SolenoidValve(models.Model):
     number = models.IntegerField(validators=[MinValueValidator(1),
                                              MaxValueValidator(6)])
     step = models.IntegerField()
+    first_pin = models.IntegerField()
+    second_pin = models.IntegerField()
 
 
 

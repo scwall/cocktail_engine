@@ -9,7 +9,7 @@
             {% for cocktail in cocktails %}
                 <div class="row">
                     <div class="col-md-11 .offset-md-1">
-                        <div class="jumbotron jumbotron-main text-center" style="padding-top: 1rem">
+                        <div class="jumbotron jumbotron-main text-center" id="{{ cocktail.name }}" style="padding-top: 1rem">
                             <img class=" d-block m-auto" src="{% if cocktail.image|length > 0 %}{{ cocktail.image.url }}
                                 {% else %}{{ MEDIA_URL }}{{ '/cocktail_picture/default.png' }} {% endif %}"
                                  width="80rem" height="80rem">
