@@ -127,7 +127,7 @@ class CocktailEngineTest(LiveServerTestCase):
                                         **{'HTTP_X_REQUESTED_WITH': 'XMLHttpRequest'})
             response_json = json.loads(response.content.decode('utf-8'))
             self.assertEqual(response.status_code, 200)
-            self.assertEqual(response_json['task_info'], 80)
+            self.assertEqual(response_json['task_info'], 0)
 
         response = self.client.post(self.live_server_url + reverse('engine:makeCocktail'), {"cocktail_id": "3"},
                                     **{'HTTP_X_REQUESTED_WITH': 'XMLHttpRequest'})
@@ -160,10 +160,29 @@ class CocktailEngineTest(LiveServerTestCase):
         bottle= Bottle.objects.get(solenoid_valve__number=6)
         self.assertTrue(bottle.empty,True)
     def test_cocktail_admin_add_cocktail(self):
+        response = self.client.post(self.live_server_url + reverse('engine:cocktailEngineAdmin'),
+                         {'name':'cocktailfive',
+                          'description': 'cocktail five',
+                          'image': [''],
+                          'form-TOTAL_FORMS': ['1'],
+                          'form-MIN_NUM_FORMS': ['0'],
+                          'form-MAX_NUM_FORMS': ['6'],
+                          'form-INITIAL_FORMS': ['0'],
+                          'form-0-dose': ['2'],
+                          'form-0-bottle': ['bottle1'],
+                          'form-1-dose': ['3'],
+                          'form-1-bottle': ['bottle2'],
+                          })
+        self.assertEqual(response.status_code, 200)
         self.browser.driver.get(self.live_server_url + reverse('engine:cocktailEngineAdmin'))
         cocktail1 = self.browser.driver.find_element_by_id('cocktailone').find_element_by_tag_name('p').get_attribute(
             "innerText")
         cocktail2 = self.browser.driver.find_element_by_id('cocktailtwo').find_element_by_tag_name('p').get_attribute(
             "innerText")
+        cocktail5 = self.browser.driver.find_element_by_id('cocktailfive').find_element_by_tag_name('p').get_attribute(
+            "innerText")
+        response = self.client.get(self.live_server_url + reverse('engine:cocktailEngineAdmin') + '?deleteCocktail=3')
+        self.assertEqual(response.status_code, 302)
         self.assertEqual(cocktail1,"Nom: cocktailone")
         self.assertEqual(cocktail2, "Nom: cocktailtwo")
+        self.assertEqual(cocktail5,'Nom: cocktailfive')

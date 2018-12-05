@@ -128,7 +128,6 @@ def cocktailEngineAdmin(request):
     if request.method == 'POST':
         bottle_form_set = BottleFormSet(request.POST)
         cocktail_make_form = CocktailMakeForm(request.POST, request.FILES)
-
         if cocktail_make_form.is_valid() and bottle_form_set.is_valid():
             cocktail = Cocktail.objects.create(name=cocktail_make_form.cleaned_data.get('name'),
                                                description=cocktail_make_form.cleaned_data.get('description'),
