@@ -114,7 +114,7 @@ class CocktailEngineTest(LiveServerTestCase):
         cocktail = self.browser.driver.find_element_by_id('cocktailtwo').find_element_by_tag_name('p').get_attribute(
             "innerText")
         self.assertEqual(cocktail, 'Nom: cocktailtwo')
-
+    @patch('engine.views.make_cocktail.delay',lambda x: 90)
     def test_view_make_cocktail(self):
 
         response = self.client.post(self.live_server_url + reverse('engine:makeCocktail'), {"cocktail_id": "1"},
@@ -122,12 +122,12 @@ class CocktailEngineTest(LiveServerTestCase):
         response_json = json.loads(response.content.decode('utf-8'))
         self.assertEqual(response.status_code, 200)
         self.assertNotEqual(response_json['task_id'],'error')
-        with mock.patch('engine.views.make_cocktail.delay',return_value=110):
-            response = self.client.post(self.live_server_url + reverse('engine:makeCocktail'), {"task_id": response_json['task_id']},
-                                        **{'HTTP_X_REQUESTED_WITH': 'XMLHttpRequest'})
-            response_json = json.loads(response.content.decode('utf-8'))
-            self.assertEqual(response.status_code, 200)
-            self.assertEqual(response_json['task_info'], 0)
+
+        response = self.client.post(self.live_server_url + reverse('engine:makeCocktail'), {"task_id": response_json['task_id']},
+                                    **{'HTTP_X_REQUESTED_WITH': 'XMLHttpRequest'})
+        response_json = json.loads(response.content.decode('utf-8'))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response_json['task_info'], 90)
 
         response = self.client.post(self.live_server_url + reverse('engine:makeCocktail'), {"cocktail_id": "3"},
                                     **{'HTTP_X_REQUESTED_WITH': 'XMLHttpRequest'})

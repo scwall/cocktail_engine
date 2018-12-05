@@ -106,7 +106,7 @@ def make_cocktail(list):
                     time.sleep(4)
                     valve_one.value = True
                     time.sleep(3)
-                    time.sleep(10)
+                    time.sleep(6)
                     if dose == 0:
                         current_task.update_state(
                             state='PROGRESS_STATE',
@@ -121,27 +121,11 @@ def make_cocktail(list):
         else:
             stepper_start_begin(myStepper)
 
-
     turnOffMotors()
-    return {'total': 100}
-        # current_task.update_state(
-        #     state='PROGRESS_STATE',
-        #     meta={
-        #         'total': 20,
-        #     })
-        # # move tray
-        # time.sleep(30)
-        # current_task.update_state(
-        #     state='PROGRESS_STATE',
-        #     meta={
-        #         'total': 60,
-        #     })
-        # # send dose
-        # time.sleep(10)
-        # current_task.update_state(
-        #     state='PROGRESS_STATE',
-        #     meta={
-        #         'total': 80,
-        #     })
-        # time.sleep(10)
-        # return {'total': 100}
+    current_task.update_state(
+        state='PROGRESS_STATE',
+        meta={
+            'total': 100
+        })
+    stepper_start_begin(myStepper)
+    turnOffMotors()
