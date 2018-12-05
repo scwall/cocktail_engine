@@ -1,4 +1,5 @@
 import json
+from unittest.mock import patch
 
 import tempfile
 from PIL import Image
@@ -13,7 +14,7 @@ from django.core.management import call_command
 from django.test import TestCase
 from selenium import webdriver
 # Create your tests here.
-
+from cocktail_engine.celery import app
 from django.contrib.auth.models import User
 from unittest import mock
 import requests
@@ -32,12 +33,12 @@ class CocktailEngineTest(LiveServerTestCase):
                                browser='chrome',
                                default_timeout=15,
                                webdriver_options={'arguments': ['headless']})
-        SolenoidValve.objects.create(id=1, number=1, step=10)
-        SolenoidValve.objects.create(id=2, number=2, step=20)
-        SolenoidValve.objects.create(id=3, number=3, step=30)
-        SolenoidValve.objects.create(id=4, number=4, step=40)
-        SolenoidValve.objects.create(id=5, number=5, step=50)
-        SolenoidValve.objects.create(id=6, number=6, step=60)
+        SolenoidValve.objects.create(id=1, number=1, step=10,first_pin=1,second_pin=2)
+        SolenoidValve.objects.create(id=2, number=2, step=20,first_pin=1,second_pin=2)
+        SolenoidValve.objects.create(id=3, number=3, step=30,first_pin=1,second_pin=2)
+        SolenoidValve.objects.create(id=4, number=4, step=40,first_pin=1,second_pin=2)
+        SolenoidValve.objects.create(id=5, number=5, step=50,first_pin=1,second_pin=2)
+        SolenoidValve.objects.create(id=6, number=6, step=60,first_pin=1,second_pin=2)
         bottle_one = Bottle.objects.create(id=1, name='bottle1', solenoid_valve_id=1)
         bottle_two = Bottle.objects.create(id=2, name='bottle2', solenoid_valve_id=2)
         bottle_three = Bottle.objects.create(id=3, name='bottle3', solenoid_valve_id=3)
@@ -115,16 +116,19 @@ class CocktailEngineTest(LiveServerTestCase):
         self.assertEqual(cocktail, 'Nom: cocktailtwo')
 
     def test_view_make_cocktail(self):
+
         response = self.client.post(self.live_server_url + reverse('engine:makeCocktail'), {"cocktail_id": "1"},
                                     **{'HTTP_X_REQUESTED_WITH': 'XMLHttpRequest'})
         response_json = json.loads(response.content.decode('utf-8'))
         self.assertEqual(response.status_code, 200)
         self.assertNotEqual(response_json['task_id'],'error')
-        response = self.client.post(self.live_server_url + reverse('engine:makeCocktail'), {"task_id": response_json['task_id']},
-                                    **{'HTTP_X_REQUESTED_WITH': 'XMLHttpRequest'})
-        response_json = json.loads(response.content.decode('utf-8'))
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response_json['task_info'], 0)
+        with mock.patch('engine.views.make_cocktail.delay',return_value=110):
+            response = self.client.post(self.live_server_url + reverse('engine:makeCocktail'), {"task_id": response_json['task_id']},
+                                        **{'HTTP_X_REQUESTED_WITH': 'XMLHttpRequest'})
+            response_json = json.loads(response.content.decode('utf-8'))
+            self.assertEqual(response.status_code, 200)
+            self.assertEqual(response_json['task_info'], 80)
+
         response = self.client.post(self.live_server_url + reverse('engine:makeCocktail'), {"cocktail_id": "3"},
                                     **{'HTTP_X_REQUESTED_WITH': 'XMLHttpRequest'})
         response_json = json.loads(response.content.decode('utf-8'))
@@ -155,4 +159,11 @@ class CocktailEngineTest(LiveServerTestCase):
                                     **{'HTTP_X_REQUESTED_WITH': 'XMLHttpRequest'})
         bottle= Bottle.objects.get(solenoid_valve__number=6)
         self.assertTrue(bottle.empty,True)
-
+    def test_cocktail_admin_add_cocktail(self):
+        self.browser.driver.get(self.live_server_url + reverse('engine:cocktailEngineAdmin'))
+        cocktail1 = self.browser.driver.find_element_by_id('cocktailone').find_element_by_tag_name('p').get_attribute(
+            "innerText")
+        cocktail2 = self.browser.driver.find_element_by_id('cocktailtwo').find_element_by_tag_name('p').get_attribute(
+            "innerText")
+        self.assertEqual(cocktail1,"Nom: cocktailone")
+        self.assertEqual(cocktail2, "Nom: cocktailtwo")
