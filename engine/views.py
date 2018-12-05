@@ -1,3 +1,4 @@
+import platform
 import time
 
 from django.core.paginator import Paginator
@@ -9,6 +10,7 @@ from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
 from django.views.generic import ListView
 import json
 
+from cocktail_engine.celery import app
 from engine.forms import BottleCreateForm, BottleFormSet, CocktailMakeForm
 from engine.models import Cocktail, Bottle, Bottles_belongs_cocktails, SolenoidValve
 from .tasks import make_cocktail
@@ -37,26 +39,28 @@ def cocktailViews(request):
 # makeCocktail serve for create asyncronious task, and send in jquery script for the progression bar
 
 def makeCocktail(request):
+    i = app.control.inspect()
     if request.is_ajax():
         if 'cocktail_id' in request.POST.keys() and request.POST['cocktail_id']:
             cocktail_id = request.POST['cocktail_id']
             cocktail = Cocktail.objects.get(id=cocktail_id)
-
             if cocktail.bottles.filter(empty=True) or not cocktail.bottles.all():
                 return JsonResponse({'task_id': 'error'})
-
-
             else:
-                list_execute_cocktail = [{'step': SolenoidValve.objects.get(number=bottle.solenoid_valve_id).step,
-                                          'first_pin': SolenoidValve.objects.get(number=bottle.solenoid_valve_id).first_pin,
-                                          'second_pin':SolenoidValve.objects.get(number=bottle.solenoid_valve_id).second_pin,
-                                          'solenoidvalve': bottle.solenoid_valve_id,
-                                          'dose': Bottles_belongs_cocktails.objects.get(bottle=bottle.id,
-                                                                                        cocktail=cocktail.id).dose}
-                                         for bottle in cocktail.bottles.all()]
-                print('execute ', list_execute_cocktail)
-                task = make_cocktail.delay(list_execute_cocktail)
-                return JsonResponse({'task_id': task.id})
+                if i.active()['celery@' + platform.node()]:
+                    return JsonResponse({'task_id': 'full'})
+
+                else:
+                    list_execute_cocktail = [{'step': SolenoidValve.objects.get(number=bottle.solenoid_valve_id).step,
+                                              'first_pin': SolenoidValve.objects.get(number=bottle.solenoid_valve_id).first_pin,
+                                              'second_pin':SolenoidValve.objects.get(number=bottle.solenoid_valve_id).second_pin,
+                                              'solenoidvalve': bottle.solenoid_valve_id,
+                                              'dose': Bottles_belongs_cocktails.objects.get(bottle=bottle.id,
+                                                                                            cocktail=cocktail.id).dose}
+                                             for bottle in cocktail.bottles.all()]
+                    print('execute ', list_execute_cocktail)
+                    task = make_cocktail.delay(list_execute_cocktail)
+                    return JsonResponse({'task_id': task.id})
 
         if 'task_id' in request.POST.keys() and request.POST['task_id']:
             task_id = request.POST['task_id']
@@ -65,8 +69,9 @@ def makeCocktail(request):
                 task_info = 0
             else:
                 task_info = task.result['total']
-            return JsonResponse({'task_info': task_info})
 
+            return JsonResponse({'task_info': task_info})
+        print(i.active())
 @ensure_csrf_cookie
 def bottleEngineAdmin(request):
     valves = SolenoidValve.objects.all().order_by('number')
