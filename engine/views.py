@@ -1,21 +1,15 @@
 import platform
-import time
 
-from django.core.paginator import Paginator
-from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
-import json
+from celery.result import AsyncResult
+from django.http import JsonResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
-from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
-from django.views.generic import ListView
-import json
+from django.views.decorators.csrf import ensure_csrf_cookie
 
 from cocktail_engine.celery import app
 from engine.forms import BottleCreateForm, BottleFormSet, CocktailMakeForm
 from engine.models import Cocktail, Bottle, Bottles_belongs_cocktails, SolenoidValve
 from .tasks import make_cocktail
-from celery.result import AsyncResult
-from django import template
 
 
 # cocktail Views is main view
@@ -52,8 +46,10 @@ def makeCocktail(request):
 
                 else:
                     list_execute_cocktail = [{'step': SolenoidValve.objects.get(number=bottle.solenoid_valve_id).step,
-                                              'first_pin': SolenoidValve.objects.get(number=bottle.solenoid_valve_id).first_pin,
-                                              'second_pin':SolenoidValve.objects.get(number=bottle.solenoid_valve_id).second_pin,
+                                              'first_pin': SolenoidValve.objects.get(
+                                                  number=bottle.solenoid_valve_id).first_pin,
+                                              'second_pin': SolenoidValve.objects.get(
+                                                  number=bottle.solenoid_valve_id).second_pin,
                                               'solenoidvalve': bottle.solenoid_valve_id,
                                               'dose': Bottles_belongs_cocktails.objects.get(bottle=bottle.id,
                                                                                             cocktail=cocktail.id).dose}
@@ -72,6 +68,8 @@ def makeCocktail(request):
 
             return JsonResponse({'task_info': task_info})
         print(i.active())
+
+
 @ensure_csrf_cookie
 def bottleEngineAdmin(request):
     valves = SolenoidValve.objects.all().order_by('number')
@@ -103,6 +101,7 @@ def bottleEngineAdmin(request):
 
     return render(request, template_name='cocktail-engine-admin/bottles.html', context=context)
 
+
 def bottleModifyParameter(request):
     if request.is_ajax():
         if 'empty' in request.POST.keys() and request.POST['empty'] and 'solenoidValve' in request.POST.keys() and \
@@ -119,6 +118,7 @@ def bottleModifyParameter(request):
             SolenoidValve.objects.filter(number=solenoidValve).update(step=step)
             return JsonResponse({'step': 'ok'})
         return JsonResponse({'': ''})
+
 
 @ensure_csrf_cookie
 def cocktailEngineAdmin(request):

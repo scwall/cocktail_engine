@@ -1,5 +1,3 @@
-import string
-import time
 import atexit
 import time
 
@@ -9,8 +7,6 @@ import adafruit_mcp230xx
 import board
 import busio
 from Adafruit_MotorHAT import Adafruit_MotorHAT
-from django.contrib.auth.models import User
-from django.utils.crypto import get_random_string
 from celery.utils.log import get_task_logger
 
 logger = get_task_logger(__name__)
@@ -27,7 +23,6 @@ mcp23017 = adafruit_mcp230xx.MCP23017(i2c)
 mh = Adafruit_MotorHAT(addr=0x60)
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(5, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-
 
 
 def turnOffMotors():
@@ -61,13 +56,17 @@ def stepper_start_begin(stepper):
             stepper.oneStep(Adafruit_MotorHAT.BACKWARD, Adafruit_MotorHAT.DOUBLE)
 
     turnOffMotors()
+
+
 def progress_percent(size_list):
-    for i in range(size_list*3):
-        yield (90 / (size_list*3)) * (i+1)
+    for i in range(size_list * 3):
+        yield (90 / (size_list * 3)) * (i + 1)
+
 
 myStepper = mh.getStepper(200, 1)
 myStepper.setSpeed(200)
 atexit.register(turnOffMotors)
+
 
 @shared_task()
 def make_cocktail(list):
@@ -97,7 +96,7 @@ def make_cocktail(list):
                 current_task.update_state(
                     state='PROGRESS_STATE',
                     meta={
-                          'total': next(progress)
+                        'total': next(progress)
                     })
 
                 # send dose

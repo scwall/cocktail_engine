@@ -1,9 +1,5 @@
-from django.conf import settings
-from django.conf.urls import url
-from django.conf.urls.static import static
 from django.urls import path
 
-from engine import views
 from engine.views import cocktailViews, bottleEngineAdmin, makeCocktail, bottleModifyParameter, cocktailEngineAdmin
 
 app_name = 'engine'

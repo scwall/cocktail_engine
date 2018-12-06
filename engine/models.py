@@ -1,5 +1,6 @@
-from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.db import models
+
 
 class SolenoidValve(models.Model):
     number = models.IntegerField(validators=[MinValueValidator(1),
@@ -7,7 +8,6 @@ class SolenoidValve(models.Model):
     step = models.IntegerField()
     first_pin = models.IntegerField()
     second_pin = models.IntegerField()
-
 
 
 class Bottle(models.Model):
