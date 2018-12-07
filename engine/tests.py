@@ -105,8 +105,8 @@ class CocktailEngineTest(LiveServerTestCase):
         self.assertEqual(cocktail, 'Nom: cocktailtwo')
 
 
-    @patch('engine.views.make_cocktail.delay', lambda x: 0)
-    @patch('engine.views.make_cocktail.app.control.inspect',MagicMock())
+    @patch('engine.views.make_cocktail.delay', lambda x:0)
+    @patch('engine.views.make_cocktail.app.control.inspect', MagicMock())
     def test_view_make_cocktail(self):
         response = self.client.post(self.live_server_url + reverse('engine:makeCocktail'), {"cocktail_id": "1"},
                                     **{'HTTP_X_REQUESTED_WITH': 'XMLHttpRequest'})
