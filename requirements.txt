@@ -55,7 +55,7 @@ rinohtype==0.3.1
 rpi-ws281x==4.1.0
 RPi.GPIO==0.6.5
 selenium==3.141.0
-sip==4.19.13
+sip==4.19.8
 six==1.11.0
 sniffio==1.0.0
 snowballstemmer==1.2.1
