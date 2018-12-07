@@ -1,5 +1,5 @@
 import json
-from unittest.mock import patch
+from unittest.mock import patch, MagicMock
 
 from django.test import Client, LiveServerTestCase
 from django.urls import reverse
@@ -104,7 +104,9 @@ class CocktailEngineTest(LiveServerTestCase):
             "innerText")
         self.assertEqual(cocktail, 'Nom: cocktailtwo')
 
-    @patch('engine.views.make_cocktail.delay', lambda x: 90)
+
+    @patch('engine.views.make_cocktail.delay', lambda x: 0)
+    @patch('engine.views.make_cocktail.app.control.inspect',MagicMock())
     def test_view_make_cocktail(self):
         response = self.client.post(self.live_server_url + reverse('engine:makeCocktail'), {"cocktail_id": "1"},
                                     **{'HTTP_X_REQUESTED_WITH': 'XMLHttpRequest'})
@@ -117,7 +119,7 @@ class CocktailEngineTest(LiveServerTestCase):
                                     **{'HTTP_X_REQUESTED_WITH': 'XMLHttpRequest'})
         response_json = json.loads(response.content.decode('utf-8'))
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response_json['task_info'], 90)
+        self.assertEqual(response_json['task_info'], 0)
 
         response = self.client.post(self.live_server_url + reverse('engine:makeCocktail'), {"cocktail_id": "3"},
                                     **{'HTTP_X_REQUESTED_WITH': 'XMLHttpRequest'})
