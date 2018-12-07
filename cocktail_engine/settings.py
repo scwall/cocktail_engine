@@ -29,7 +29,7 @@ BASE_MAIN = os.path.dirname(os.path.realpath(__file__))
 SECRET_KEY = '+g2!jv3n$*pv7zprsc15q(xb))bv0zki1y@h+f30$*+k0%4z5v'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["192.168.1.81", "127.0.0.1"]
 
@@ -83,12 +83,8 @@ WSGI_APPLICATION = 'cocktail_engine.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',  # on utilise l'adaptateur postgresql
-        'NAME': 'engine',  # le nom de notre base de donnees creee precedemment
-        'USER': 'engine',  # attention : remplacez par votre nom d'utilisateur
-        'PASSWORD': 'engine##',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'engine.sqlite3'),
     }
 }
 if 'test' in sys.argv:
