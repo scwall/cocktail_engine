@@ -12,7 +12,11 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 import sys
 
 import os
+import sys
+import fake_rpi
 
+sys.modules['RPi'] = fake_rpi.RPi     # Fake RPi (GPIO)
+sys.modules['smbus'] = fake_rpi.smbus # Fake smbus (I2C)
 CELERY_BROKER_URL = 'amqp://localhost'
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
