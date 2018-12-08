@@ -3,15 +3,13 @@ dist: xenial
 language: python
 python:
   - '3.5'
-addons: # get google-chrome-stable
-  chrome: stable
-install: # Install ChromeDriver (64bits; replace 64 with 32 for 32bits).
-  - wget -N http://chromedriver.storage.googleapis.com/2.30/chromedriver_linux64.zip -P ~/
-  - unzip ~/chromedriver_linux64.zip -d ~/
-  - rm ~/chromedriver_linux64.zip
-  - sudo mv -f ~/chromedriver /usr/local/share/
-  - sudo chmod +x /usr/local/share/chromedriver
-  - sudo ln -s /usr/local/share/chromedriver /usr/lib/chromium-browser/chromedriver
+before_install:
+  - apt-get install -y libglib2.0-0=2.50.3-2 \
+    libnss3=2:3.26.2-1.1+deb9u1 \
+    libgconf-2-4=3.2.6-4+b1 \
+    libfontconfig1=2.11.0-6.7+b1\
+    chromium-browser\
+    chromium-driver
 before_script:
   - pip install -r requirements.txt
 
