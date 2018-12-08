@@ -10,13 +10,10 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 import sys
+from unittest.mock import MagicMock
 
 import os
 import sys
-import fake_rpi
-
-sys.modules['RPi'] = fake_rpi.RPi     # Fake RPi (GPIO)
-sys.modules['smbus'] = fake_rpi.smbus # Fake smbus (I2C)
 CELERY_BROKER_URL = 'amqp://localhost'
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
@@ -96,6 +93,12 @@ if 'test' in sys.argv:
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': 'datatest'
     }
+    sys.modules['RPi.GPIO'] = MagicMock()
+    sys.modules['busio'] = MagicMock()
+    sys.modules['Adafruit_MotorHAT'] = MagicMock()
+    sys.modules['Adafruit_MCP3008'] = MagicMock()
+    sys.modules['adafruit_mcp230xx'] = MagicMock()
+    sys.modules['board'] = MagicMock()
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators

@@ -1,4 +1,5 @@
 import json
+import sys
 from unittest.mock import patch, MagicMock
 
 from django.test import Client, LiveServerTestCase
@@ -12,6 +13,7 @@ from engine.models import Bottle, SolenoidValve, Cocktail, Bottles_belongs_cockt
 
 class CocktailEngineTest(LiveServerTestCase):
     def setUp(self):
+
         options = webdriver.ChromeOptions()
         options.add_argument('headless')
         options.add_argument('--no-sandbox')
