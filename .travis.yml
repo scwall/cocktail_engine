@@ -15,6 +15,6 @@ env: DJANGO_SETTINGS_MODULE="cocktail_engine.settings"
 script:
   - whereis google-chrome-stable
   - whereis chromedriver
-  - ./manage.py test
+  - coverage run manage.py test engine -v 2
 after_success:
-  - codecov codecov -t "45dd26e0-2ebf-4153-a265-99862693e90a"
+  - bash < (curl -s https://codecov.io/bash)
