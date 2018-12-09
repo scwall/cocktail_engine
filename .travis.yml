@@ -17,4 +17,4 @@ script:
   - whereis chromedriver
   - ./manage.py test
 after_success:
-  - codecov --token="45dd26e0-2ebf-4153-a265-99862693e90a"
+  - codecov codecov -t "45dd26e0-2ebf-4153-a265-99862693e90a"
