@@ -10,8 +10,9 @@ before_script:
   - pip install codecov
 
 env:
-  - DJANGO_SETTINGS_MODULE="cocktail_engine.settings"
   - CODECOV_TOKEN="45dd26e0-2ebf-4153-a265-99862693e90a"
+  - DJANGO_SETTINGS_MODULE="cocktail_engine.settings"
+
 
 script:
   - whereis google-chrome-stable
