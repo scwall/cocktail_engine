@@ -13,15 +13,10 @@ from engine.models import Bottle, SolenoidValve, Cocktail, Bottles_belongs_cockt
 
 class CocktailEngineTest(LiveServerTestCase):
     def setUp(self):
-
-        options = webdriver.ChromeOptions()
-        options.add_argument('headless')
-        options.add_argument('--no-sandbox')
-        # self.browser = webdriver.Chrome('/usr/lib/chromium-browser/chromedriver', chrome_options=options)
         self.browser = Session(webdriver_path='/usr/lib/chromium-browser/chromedriver',
                                browser='chrome',
                                default_timeout=15,
-                               webdriver_options={'arguments': ['headless']})
+                               webdriver_options={'arguments': ['--headless','--no-sandbox','--disable-dev-shm-usage']})
         SolenoidValve.objects.create(id=1, number=1, step=10, first_pin=1, second_pin=2)
         SolenoidValve.objects.create(id=2, number=2, step=20, first_pin=1, second_pin=2)
         SolenoidValve.objects.create(id=3, number=3, step=30, first_pin=1, second_pin=2)
