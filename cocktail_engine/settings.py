@@ -99,6 +99,9 @@ if 'test' in sys.argv:
     sys.modules['Adafruit_MCP3008'] = MagicMock()
     sys.modules['adafruit_mcp230xx'] = MagicMock()
     sys.modules['board'] = MagicMock()
+    BROKER_BACKEND = 'memory'
+    CELERY_TASK_ALWAYS_EAGER = True
+    CELERY_TASK_EAGER_PROPAGATES = True
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
