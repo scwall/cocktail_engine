@@ -11,6 +11,7 @@ from selenium import webdriver
 from engine.models import Bottle, SolenoidValve, Cocktail, Bottles_belongs_cocktails
 
 
+
 class CocktailEngineTest(LiveServerTestCase):
     def setUp(self):
         self.browser = Session(webdriver_path='/usr/lib/chromium-browser/chromedriver',
