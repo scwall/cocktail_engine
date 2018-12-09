@@ -14,6 +14,7 @@ from unittest.mock import MagicMock
 
 import os
 import sys
+
 CELERY_BROKER_URL = 'amqp://localhost'
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
@@ -28,11 +29,17 @@ BASE_MAIN = os.path.dirname(os.path.realpath(__file__))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '+g2!jv3n$*pv7zprsc15q(xb))bv0zki1y@h+f30$*+k0%4z5v'
-
+if os.environ.get('ENV') == 'PRODUCTION':
+    SECRET_KEY = os.environ.get('SECRET_KEY')
+else:
+    SECRET_KEY = '+g2!jv3n$*pv7zprsc15q(xb))bv0zki1y@h+f30$*+k0%4z5v'
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+if os.environ.get('ENV') == 'PRODUCTION':
+    DEBUG = False
+else:
+    DEBUG = True
 
-ALLOWED_HOSTS = ["192.168.1.81", "127.0.0.1","*"]
+ALLOWED_HOSTS = ["*"]
 
 # Application definition
 
@@ -61,8 +68,7 @@ ROOT_URLCONF = 'cocktail_engine.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')]
-        ,
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -91,7 +97,7 @@ DATABASES = {
 if 'test' in sys.argv:
     DATABASES['default'] = {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'datatest'
+        'NAME': 'Data test'
     }
     sys.modules['RPi.GPIO'] = MagicMock()
     sys.modules['busio'] = MagicMock()
@@ -141,5 +147,7 @@ STATIC_URL = '/static/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 MEDIA_URL = '/media/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
-NOSE_ARGS = ['--nocapture',
-             '--nologcapture', ]
+# Debug test
+if os.environ.get('ENV') != 'PRODUCTION':
+    NOSE_ARGS = ['--nocapture',
+                 '--nologcapture', ]
