@@ -5,7 +5,7 @@
 
 Software for the machine cocktail engine 
 
-## :warning:
+## :warning: Project for only raspberry pi :warning:
 
 ## Getting Started
 
