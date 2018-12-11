@@ -31,12 +31,9 @@ BASE_MAIN = os.path.dirname(os.path.realpath(__file__))
 SECRET_KEY = '+g2!jv3n$*pv7zprsc15q(xb))bv0zki1y@h+f30$*+k0%4z5v'
 if os.environ.get('ENV') == 'PRODUCTION':
     SECRET_KEY = os.environ.get('SECRET_KEY')
-else:
-    SECRET_KEY = '+g2!jv3n$*pv7zprsc15q(xb))bv0zki1y@h+f30$*+k0%4z5v'
-# SECURITY WARNING: don't run with debug turned on in production!
-if os.environ.get('ENV') == 'PRODUCTION':
     DEBUG = False
 else:
+    SECRET_KEY = '+g2!jv3n$*pv7zprsc15q(xb))bv0zki1y@h+f30$*+k0%4z5v'
     DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
@@ -100,12 +97,13 @@ if 'test' in sys.argv:
         'NAME': 'Data test'
     }
     sys.modules['RPi.GPIO'] = MagicMock()
+    sys.modules['RPi.GPIO'] = MagicMock()
     sys.modules['busio'] = MagicMock()
     sys.modules['Adafruit_MotorHAT'] = MagicMock()
     sys.modules['Adafruit_MCP3008'] = MagicMock()
     sys.modules['adafruit_mcp230xx'] = MagicMock()
     sys.modules['board'] = MagicMock()
-    BROKER_BACKEND = 'memory'
+    # BROKER_BACKEND = 'memory'
     CELERY_TASK_ALWAYS_EAGER = True
     CELERY_TASK_EAGER_PROPAGATES = True
 

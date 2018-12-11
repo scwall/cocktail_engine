@@ -9,8 +9,6 @@ import busio
 from Adafruit_MotorHAT import Adafruit_MotorHAT
 from celery.utils.log import get_task_logger
 
-
-
 logger = get_task_logger(__name__)
 
 from celery import shared_task, current_task
@@ -82,7 +80,6 @@ def make_cocktail(list):
                 valve_one = valve(bottle['first_pin'])
                 valve_two = valve(bottle['second_pin'])
                 dose = 0
-                print('Cocktail start')
                 current_task.update_state(
                     state='PROGRESS_STATE',
                     meta={

@@ -1,7 +1,9 @@
 import json
 import sys
+from unittest import TestCase
 from unittest.mock import patch, MagicMock
 
+from celery.exceptions import Retry
 from django.test import Client, LiveServerTestCase
 from django.urls import reverse
 from requestium import Session
@@ -9,7 +11,7 @@ from requestium import Session
 from selenium import webdriver
 
 from engine.models import Bottle, SolenoidValve, Cocktail, Bottles_belongs_cocktails
-
+from engine.tasks import progress_percent, make_cocktail
 
 
 class CocktailEngineTest(LiveServerTestCase):
@@ -181,3 +183,15 @@ class CocktailEngineTest(LiveServerTestCase):
         self.assertEqual(cocktail1, "Nom: cocktailone")
         self.assertEqual(cocktail2, "Nom: cocktailtwo")
         self.assertEqual(cocktail5, 'Nom: cocktailfive')
+class CeleryTaskEngineTest(TestCase):
+    @patch('engine.tasks.make_cocktail')
+    @patch('engine.tasks.current_task',MagicMock(update_state=(MagicMock())))
+    @patch('engine.tasks.mcp3008.read_adc',MagicMock(return_value=1))
+    @patch('engine.tasks.GPIO.input', MagicMock(return_value=False))
+    def test_my_task_is_called(self, mock_cocktail_task):
+        mock_cocktail_task.side_effect = Retry()
+        self.assertRaises(Retry,make_cocktail([{'step': 1,
+                         'first_pin': 1,
+                         'second_pin': 2,
+                         'solenoidvalve': 3,
+                         'dose': 1}]))
