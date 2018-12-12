@@ -32,7 +32,7 @@
                         <h1>Ajouter un Cocktail</h1><br>
                         <div class="entry">
                             <form class="form" enctype="multipart/form-data" method="post"
-                                  action="{% url 'engine:cocktailEngineAdmin' %}">
+                                  action="{% url 'engine:cocktail_engine_admin' %}">
                                 {% csrf_token %}
                                 {% for form_set in bottle_form_set.forms %}
                                     <div id="{{ form_set.prefix }}-row">

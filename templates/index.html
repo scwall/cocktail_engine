@@ -4,7 +4,7 @@
 {% block content %}
 
     <nav class="navbar navbar-light navbar-expand-md navigation-clean-search">
-        <div class="container"><a class="navbar-brand" href="{% url 'engine:cocktailViews' %}">Cocktails
+        <div class="container"><a class="navbar-brand" href="{% url 'engine:cocktail_views' %}">Cocktails
             Engine&nbsp;</a>
             <button class="navbar-toggler" data-toggle="collapse" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span
                     class="navbar-toggler-icon"></span></button>
@@ -16,13 +16,13 @@
                         <div class="dropdown-menu" role="menu">
                             {% for bottle in bottles %}
                                 <a class="dropdown-item" role="presentation"
-                                   href="{% url 'engine:cocktailViews' %}?bottle={{ bottle.id }}">{{ bottle.name }}</a>
+                                   href="{% url 'engine:cocktail_views' %}?bottle={{ bottle.id }}">{{ bottle.name }}</a>
                             {% endfor %}
 
                         </div>
                     </li>
                 </ul>
-                <form class="form-inline mr-auto" target="{% url 'engine:cocktailViews' %}">
+                <form class="form-inline mr-auto" target="{% url 'engine:cocktail_views' %}">
                     <div class="form-group"><label for="search-field"><i class="fa fa-search"></i></label><input
                             class="form-control search-field" type="search" name="name" id="search-field"
                             style="width: 9rem;"></div>
@@ -62,7 +62,7 @@
     </div>
     <footer class="fixed-bottom">
         <div class="row justify-content-end">
-            <div class="col-auto offset-md-0"><a href="{% url "engine:bottleEngineAdmin" %}"><i class="far fa-sun"
+            <div class="col-auto offset-md-0"><a href="{% url "engine:bottle_engine_admin" %}"><i class="far fa-sun"
                                                                                                 style="font-size: 62px;padding-right: 0.5rem;color: rgb(230,201,116);"></i></a>
             </div>
         </div>

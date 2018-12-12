@@ -23,7 +23,7 @@
                                        class="empty"
                                         {% if valve.bottle.empty %}
                                        checked {% endif %}> <br>
-                                <form action="{% url 'engine:bottleEngineAdmin' %}" method="get">
+                                <form action="{% url 'engine:bottle_engine_admin' %}" method="get">
                                     <button class="btn btn-danger">Supprimer</button>
                                     <input type="hidden" name="deleteBottle" value="{{ valve.bottle.id }}">
                                 </form>
@@ -34,7 +34,7 @@
                             <div class="jumbotron">
                                 <h1>Bouteille N°{{ forloop.counter }}</h1>
                                 <div class="form-group">
-                                    <form action="{% url 'engine:bottleEngineAdmin' %}" method="post"
+                                    <form action="{% url 'engine:bottle_engine_admin' %}" method="post"
                                           enctype="multipart/form-data">
                                         {% csrf_token %}
                                         <div class="form-group">
