@@ -25,7 +25,7 @@ def cocktail_views(request):
     if request.method == "GET":
         if request.GET.get('bottle'):
             bottle = request.GET.get('bottle')
-            cocktails = Cocktail.objects.filter(bottles_belongs_cocktails__bottle_id=bottle)
+            cocktails = Cocktail.objects.filter(bottlesbelongscocktails__bottle_id=bottle)
         if request.GET.get('name'):
             name = request.GET.get('name')
             cocktails = Cocktail.objects.filter(name__icontains=name)
@@ -91,9 +91,9 @@ def bottle_engine_admin(request):
     if request.method == 'GET':
         if request.GET.get('deleteBottle'):
             delete_bottle = request.GET.get('deleteBottle')
-            Cocktail.objects.filter(bottles_belongs_cocktails__bottle_id=delete_bottle).delete()
+            Cocktail.objects.filter(bottlesbelongscocktails__bottle_id=delete_bottle).delete()
             Bottle.objects.filter(id=delete_bottle).delete()
-            return HttpResponseRedirect(reverse('engine:bottleEngineAdmin'))
+            return HttpResponseRedirect(reverse('engine:bottle_engine_admin'))
 
     if request.method == 'POST':
         bottle_create_form = BottleCreateForm(request.POST, request.FILES)
@@ -109,7 +109,7 @@ def bottle_engine_admin(request):
                     solenoid_valve=SolenoidValve.objects.get(
                         number=bottle_create_form.cleaned_data['solenoidValve']))
                 bottle.save()
-                return HttpResponseRedirect(reverse('engine:bottleEngineAdmin'))
+                return HttpResponseRedirect(reverse('engine:bottle_engine_admin'))
 
     else:
         bottle_create_form = BottleCreateForm()
@@ -128,7 +128,7 @@ def bottle_modify_parameter(request):
                 request.POST['empty'] and 'solenoidValve' \
                 in request.POST.keys() and \
                 request.POST['solenoidValve']:
-            empty = bool(str.lower(request.POST['empty'] == 'true'))
+            empty = bool(str.lower(request.POST['empty']) == 'true')
             solenoid_valve = request.POST['solenoidValve']
             Bottle.objects.filter(
                 solenoid_valve__number=solenoid_valve).update(empty=empty)
@@ -158,7 +158,7 @@ def cocktail_engine_admin(request):
         if request.GET.get('deleteCocktail'):
             delete_cocktail = request.GET.get('deleteCocktail')
             Cocktail.objects.filter(id=delete_cocktail).delete()
-            return HttpResponseRedirect(reverse('engine:cocktailEngineAdmin'))
+            return HttpResponseRedirect(reverse('engine:cocktail_engine_admin'))
 
     if request.method == 'POST':
         bottle_form_set = BottleFormSet(request.POST)

@@ -34,6 +34,7 @@ class CocktailEngineTest(LiveServerTestCase):
         bottle_three = Bottle.objects.create(id=3, name='bottle3', solenoid_valve_id=3)
         bottle_four = Bottle.objects.create(id=4, name='bottle4', solenoid_valve_id=4, empty=True)
         bottle_five = Bottle.objects.create(id=5, name='bottle5', solenoid_valve_id=5)
+        Bottle.objects.create(id=6, name='bottle6', solenoid_valve_id=6)
         cocktail_one = Cocktail.objects.create \
             (id=1, name="cocktailone", description='cocktail one description')
         cocktail_two = Cocktail.objects.create \
@@ -79,7 +80,7 @@ class CocktailEngineTest(LiveServerTestCase):
         cocktail = Cocktail.objects.get(name="cocktailone")
         self.assertEqual(cocktail.description, 'cocktail one description')
         self.assertEqual(str(cocktail), 'cocktailone')
-        cocktail_by_bottle = Cocktail.objects.get(bottles_belongs_cocktails__bottle__name='bottle1')
+        cocktail_by_bottle = Cocktail.objects.get(bottlesbelongscocktails__bottle__name='bottle1')
         self.assertEqual(cocktail_by_bottle.description, 'cocktail one description')
 
     def test_cocktail_views(self):
@@ -122,14 +123,14 @@ class CocktailEngineTest(LiveServerTestCase):
     @patch('engine.views.make_cocktail.app.control.inspect', MagicMock())
     def test_view_make_cocktail(self):
         response = self.client.post(self.live_server_url +
-                                    reverse('engine:make_cocktail'), {"cocktail_id": "1"},
+                                    reverse('engine:make_the_cocktail'), {"cocktail_id": "1"},
                                     **{'HTTP_X_REQUESTED_WITH': 'XMLHttpRequest'})
         response_json = json.loads(response.content.decode('utf-8'))
         self.assertEqual(response.status_code, 200)
         self.assertNotEqual(response_json['task_id'], 'error')
 
         response = self.client.post(self.live_server_url +
-                                    reverse('engine:make_cocktail'),
+                                    reverse('engine:make_the_cocktail'),
                                     {"task_id": response_json['task_id']},
                                     **{'HTTP_X_REQUESTED_WITH': 'XMLHttpRequest'})
         response_json = json.loads(response.content.decode('utf-8'))
@@ -137,7 +138,7 @@ class CocktailEngineTest(LiveServerTestCase):
         self.assertEqual(response_json['task_info'], 0)
 
         response = self.client.post(self.live_server_url +
-                                    reverse('engine:make_cocktail'), {"cocktail_id": "3"},
+                                    reverse('engine:make_the_cocktail'), {"cocktail_id": "3"},
                                     **{'HTTP_X_REQUESTED_WITH': 'XMLHttpRequest'})
         response_json = json.loads(response.content.decode('utf-8'))
         self.assertEqual(response.status_code, 200)
@@ -168,14 +169,14 @@ class CocktailEngineTest(LiveServerTestCase):
 
     def test_bottle_admin_modify_bottle(self):
         response = self.client.post(self.live_server_url +
-                                    reverse('engine:bottleModifyParameter'),
+                                    reverse('engine:bottle_modify_parameter'),
                                     {"step": 61, "solenoidValve": 6},
                                     **{'HTTP_X_REQUESTED_WITH': 'XMLHttpRequest'})
         self.assertEqual(response.status_code, 200)
         solenoid_valve = SolenoidValve.objects.get(id=6)
         self.assertEqual(solenoid_valve.step, 61)
         self.client.post(self.live_server_url +
-                         reverse('engine:bottleModifyParameter'),
+                         reverse('engine:bottle_modify_parameter'),
                          {"empty": 'true', "solenoidValve": 6},
                          **{'HTTP_X_REQUESTED_WITH': 'XMLHttpRequest'})
         bottle = Bottle.objects.get(solenoid_valve__number=6)
