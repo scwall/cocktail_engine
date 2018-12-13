@@ -12,7 +12,7 @@ Software for the machine cocktail engine
 
 
 The django project is used for manage and create cocktail from the cocktail machine, 
-for more how to create the cocktail machine. Please you refer to the wiki
+for more how to create the cocktail machine. Please you refer to the [wiki](https://github.com/scwall/cocktail_engine/wiki/)
 
 ### Prerequisites
 
