@@ -34,7 +34,7 @@ class Cocktail(models.Model):
     name = models.CharField(max_length=80)
     description = models.TextField()
     bottles = models.ManyToManyField(Bottle,
-                                     through='engine.models.BottlesBelongsCocktails',
+                                     through='BottlesBelongsCocktails',
                                      related_name='cocktails')
     image = models.ImageField(upload_to='cocktail_picture', blank=True, null=True, )
 
