@@ -1,20 +1,25 @@
 import platform
 
 from celery.result import AsyncResult
-from django.http import JsonResponse, HttpResponseRedirect
+from django.http import JsonResponse, HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from django.urls import reverse
 from django.views.decorators.csrf import ensure_csrf_cookie
 
 from cocktail_engine.celery import app
 from engine.forms import BottleCreateForm, BottleFormSet, CocktailMakeForm
-from engine.models import Cocktail, Bottle, Bottles_belongs_cocktails, SolenoidValve
+from engine.models import Cocktail, Bottle, BottlesBelongsCocktails, SolenoidValve
 from .tasks import make_cocktail
 
 
 # cocktail Views is main view
 @ensure_csrf_cookie
 def cocktail_views(request):
+    """
+
+    :param request:
+    :return:
+    """
     bottles = Bottle.objects.all().order_by('name')
     cocktails = Cocktail.objects.all().order_by('id')
     if request.method == "GET":
@@ -32,8 +37,10 @@ def cocktail_views(request):
 
 def make_the_cocktail(request):
     """
+    ajax request only
      make_the_cocktail serve for create asyncronious
      task, and send in jquery script for the progression bar
+    :return: json response with task full, id info, total or task error
     """
 
     i = app.control.inspect()
@@ -54,8 +61,8 @@ def make_the_cocktail(request):
                   'second_pin': SolenoidValve.objects.get(
                       number=bottle.solenoid_valve_id).second_pin,
                   'solenoidvalve': bottle.solenoid_valve_id,
-                  'dose': Bottles_belongs_cocktails.objects.get(bottle=bottle.id,
-                                                                cocktail=cocktail.id).dose}
+                  'dose': BottlesBelongsCocktails.objects.get(bottle=bottle.id,
+                                                              cocktail=cocktail.id).dose}
                  for bottle in cocktail.bottles.all()]
             task = make_cocktail.delay(list_execute_cocktail)
             return JsonResponse({'task_id': task.id})
@@ -69,11 +76,16 @@ def make_the_cocktail(request):
                 task_info = task.result['total']
 
             return JsonResponse({'task_info': task_info})
-    return JsonResponse({'error': 'bad request'}, status=400)
+        return JsonResponse({'error': 'bad request'}, status=400)
+    return HttpResponse('bad request', status=400)
 
 
 @ensure_csrf_cookie
 def bottle_engine_admin(request):
+    """
+    View for delete and create bottle, and show step and if bottle is empty
+
+    """
     valves = SolenoidValve.objects.all().order_by('number')
 
     if request.method == 'GET':
@@ -107,12 +119,16 @@ def bottle_engine_admin(request):
 
 
 def bottle_modify_parameter(request):
+    """
+    Request ajax using for modify empty and step in database
+    :return: empty 'ok' for confirm the request is executed
+    """
     if request.is_ajax():
         if 'empty' in request.POST.keys() and \
                 request.POST['empty'] and 'solenoidValve' \
                 in request.POST.keys() and \
                 request.POST['solenoidValve']:
-            empty = (lambda boolean: True if boolean else False)(request.POST['empty'])
+            empty = bool(str.lower(request.POST['empty'] == 'true'))
             solenoid_valve = request.POST['solenoidValve']
             Bottle.objects.filter(
                 solenoid_valve__number=solenoid_valve).update(empty=empty)
@@ -126,11 +142,16 @@ def bottle_modify_parameter(request):
             solenoid_valve = request.POST['solenoidValve']
             SolenoidValve.objects.filter(number=solenoid_valve).update(step=step)
             return JsonResponse({'step': 'ok'})
-    return JsonResponse({'error': 'bad request'}, status=400)
+        return JsonResponse({'error': 'bad request'}, status=400)
+
+    return HttpResponse('bad request', status=400)
 
 
 @ensure_csrf_cookie
 def cocktail_engine_admin(request):
+    """
+    View for create and delete cocktail
+    """
     cocktails = Cocktail.objects.filter().all()
     cocktail_make_form = CocktailMakeForm()
     if request.method == 'GET':
@@ -150,7 +171,7 @@ def cocktail_engine_admin(request):
 
             for bottle_data in bottle_form_set:
                 bottle = Bottle.objects.get(name=bottle_data.cleaned_data.get('bottle'))
-                bottles_belongs_cocktails = Bottles_belongs_cocktails(
+                bottles_belongs_cocktails = BottlesBelongsCocktails(
                     bottle=bottle, cocktail=cocktail,
                     dose=bottle_data.cleaned_data.get('dose'))
                 bottles_belongs_cocktails.save()

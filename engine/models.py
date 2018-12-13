@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 
@@ -33,7 +34,7 @@ class Cocktail(models.Model):
     name = models.CharField(max_length=80)
     description = models.TextField()
     bottles = models.ManyToManyField(Bottle,
-                                     through='Bottles_belongs_cocktails',
+                                     through='engine.models.BottlesBelongsCocktails',
                                      related_name='cocktails')
     image = models.ImageField(upload_to='cocktail_picture', blank=True, null=True, )
 
@@ -41,7 +42,7 @@ class Cocktail(models.Model):
         return self.name
 
 
-class Bottles_belongs_cocktails(models.Model):
+class BottlesBelongsCocktails(models.Model):
     """
         Model for the relation many to many between cocktail and bottle
     """
