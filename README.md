@@ -63,10 +63,6 @@ put the bottles as empty for cannot create cocktail.
 
 * **Pascal de Sélys** - *Initial work* - [scwall](https://github.com/scwall)
 
-## License
-
-This project is licensed under the GNU License
-
 ## Acknowledgments
 
 I would like to thank my teacher for his advice,my classmates, my wife and my friends for her patient, and condolence to the cactus, cactus is dead :(
