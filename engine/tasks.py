@@ -73,6 +73,7 @@ def make_cocktail(bottles_list):
     start = True
     progress = progress_percent(len(bottles_list))
     while start:
+
         if start_course():
             for bottle in bottles_list:
                 LOGGER.info(bottles_list)
