@@ -16,19 +16,24 @@ from .tasks import make_cocktail
 @ensure_csrf_cookie
 def cocktail_views(request):
     """
-
-    :param request:
-    :return:
+    The main view that shows the cocktail list. This is filtered if a bottle is empty
     """
     bottles = Bottle.objects.all().order_by('name')
-    cocktails = Cocktail.objects.all().order_by('id')
+    cocktails = Cocktail.objects.all()\
+        .exclude(bottlesbelongscocktails__bottle__empty=True)\
+        .order_by('name')
     if request.method == "GET":
         if request.GET.get('bottle'):
             bottle = request.GET.get('bottle')
-            cocktails = Cocktail.objects.filter(bottlesbelongscocktails__bottle_id=bottle)
+            cocktails = Cocktail.objects.\
+                filter(bottlesbelongscocktails__bottle_id=bottle)\
+                .exclude(bottlesbelongscocktails__bottle__empty=True)\
+                .order_by('name')
         if request.GET.get('name'):
             name = request.GET.get('name')
-            cocktails = Cocktail.objects.filter(name__icontains=name)
+            cocktails = Cocktail.objects.filter(name__icontains=name)\
+                .exclude(bottlesbelongscocktails__bottle__empty=True)\
+                .order_by('name')
 
     context = {'title': 'Liste des cocktails', 'cocktails': cocktails, 'bottles': bottles}
 
