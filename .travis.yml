@@ -7,7 +7,7 @@ before_install:
   - sudo apt-get install -y chromium-browser chromium-chromedriver
 install:
   - pip install pipenv
-  - pipenv install --dev
+  - pipenv install --dev --ignore-pipfile
 
 env:
   - DJANGO_SETTINGS_MODULE="cocktail_engine.settings"
