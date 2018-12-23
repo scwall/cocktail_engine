@@ -25,8 +25,9 @@ for more how to create the cocktail machine and configure raspberry pi. Please y
 ### Installing
 
 ```
-Install python
-Install requirements : $ pip install -r requirements.txt
+Install python 3.5
+Install pipenv : $ sudo pip3 install pipenv
+Create env and install requirements: /cocktail_engine $ pipenv install --ignore-pipfile
 Launch command: $ python manage.py runserver
                 $ python manage.py loaddata engine/solenoidvalve.json
 ```
