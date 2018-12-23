@@ -28,7 +28,6 @@ BASE_MAIN = os.path.dirname(os.path.realpath(__file__))
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '+g2!jv3n$*pv7zprsc15q(xb))bv0zki1y@h+f30$*+k0%4z5v'
 if os.environ.get('ENV') == 'PRODUCTION':
     SECRET_KEY = os.environ.get('SECRET_KEY')
     DEBUG = False
@@ -36,7 +35,7 @@ else:
     SECRET_KEY = '+g2!jv3n$*pv7zprsc15q(xb))bv0zki1y@h+f30$*+k0%4z5v'
     DEBUG = True
 
-ALLOWED_HOSTS = ["127.0.0.1","*"]
+ALLOWED_HOSTS = ["127.0.0.1", "*"]
 
 # Application definition
 

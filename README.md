@@ -28,7 +28,7 @@ for more how to create the cocktail machine and configure raspberry pi. Please y
 Install python
 Install requirements : $ pip install -r requirements.txt
 Launch command: $ python manage.py runserver
-
+                $ python manage.py loaddata engine/solenoidvalve.json
 ```
 
 ## How to use "Cocktail engine"
@@ -65,4 +65,4 @@ put the bottles as empty for cannot create cocktail.
 
 ## Acknowledgments
 
-I would like to thank my teacher for his advice,my classmates, my wife and my friends for her patient, and condolence to the cactus, cactus is dead :(
+I would like to thank my teacher for his advice,my classmates , openclassrooms for the courses amazing :D , my wife and my friends for her patient, and condolence to the cactus, cactus is dead :(
