@@ -4,7 +4,7 @@
   "pk": 1,
   "fields": {
     "number": 1,
-    "step": 1,
+    "step": 3300,
     "first_pin": 1,
     "second_pin": 2
   }
@@ -14,7 +14,7 @@
   "pk": 2,
   "fields": {
     "number": 2,
-    "step": 2,
+    "step": 8347,
     "first_pin": 0,
     "second_pin": 8
   }
@@ -24,7 +24,7 @@
   "pk": 3,
   "fields": {
     "number": 3,
-    "step": 3,
+    "step": 13946,
     "first_pin": 10,
     "second_pin": 9
   }
@@ -34,7 +34,7 @@
   "pk": 4,
   "fields": {
     "number": 4,
-    "step": 4,
+    "step": 18700,
     "first_pin": 3,
     "second_pin": 4
   }
@@ -44,7 +44,7 @@
   "pk": 5,
   "fields": {
     "number": 5,
-    "step": 5,
+    "step": 24000,
     "first_pin": 5,
     "second_pin": 6
   }
@@ -54,7 +54,7 @@
   "pk": 6,
   "fields": {
     "number": 6,
-    "step": 6,
+    "step": 29000,
     "first_pin": 7,
     "second_pin": 11
   }

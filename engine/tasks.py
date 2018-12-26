@@ -49,7 +49,7 @@ def start_course():
 def stepper_start_begin(stepper):
     while not start_course():
         if proximity_sensor() > 900:
-            stepper.oneStep(Adafruit_MotorHAT.BACKWARD, Adafruit_MotorHAT.DOUBLE)
+            stepper.oneStep(Adafruit_MotorHAT.BACKWARD, Adafruit_MotorHAT.MICROSTEP)
 
         else:
             stepper.oneStep(Adafruit_MotorHAT.BACKWARD, Adafruit_MotorHAT.DOUBLE)
@@ -101,10 +101,9 @@ def make_cocktail(bottles_list):
                 # send dose
                 while dose != bottle['dose']:
                     valve_one.value = False
-                    time.sleep(4)
-                    valve_one.value = True
                     time.sleep(3)
-                    time.sleep(6)
+                    valve_one.value = True
+                    time.sleep(1)
                     if dose == 0:
                         current_task.update_state(
                             state='PROGRESS_STATE',
@@ -112,7 +111,7 @@ def make_cocktail(bottles_list):
                                 'total': next(progress)
                             })
                     valve_two.value = False
-                    time.sleep(5)
+                    time.sleep(2)
                     valve_two.value = True
                     dose += 1
             start = False

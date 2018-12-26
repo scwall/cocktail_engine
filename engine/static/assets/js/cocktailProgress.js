@@ -4,14 +4,12 @@ $(function () {
     $makecocktail.on('submit', function (e) {
         e.preventDefault();
         var text = this.cocktail_id.value;
-        console.log(text);
         $.ajax({
             url: 'make-cocktail',
             type: 'POST',
             data: {'cocktail_id': text},
             datatype: 'json',
             success: function (task_id) {
-                console.log(task_id);
                 if (task_id.task_id === 'full') {
                     dialog = $("#dialog2").dialog({
                         autoOpen: false,
@@ -46,7 +44,7 @@ $(function () {
                             resizable: false,
                             modal: true,
                             autocomplete: true,
-                            buttons: dialogButtons,
+                            // buttons: dialogButtons,
                             open: function () {
                                 progressTimer = setTimeout(progress, 2000);
                             },
