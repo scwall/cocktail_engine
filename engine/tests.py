@@ -12,10 +12,13 @@ from engine.models import Bottle, SolenoidValve, Cocktail, BottlesBelongsCocktai
 from engine.tasks import make_cocktail
 
 
-# Create your tests here.
+
 
 
 class CocktailEngineTest(LiveServerTestCase):
+    """
+    Test the web part of the project in live server
+    """
     def setUp(self):
         self.browser = Session(webdriver_path='/usr/lib/chromium-browser/chromedriver',
                                browser='chrome',
@@ -55,19 +58,32 @@ class CocktailEngineTest(LiveServerTestCase):
         self.client = Client()
 
     def tearDown(self):
+        """
+        Close browser if is finish
+
+        """
         self.browser.driver.close()
         self.browser.close()
 
     def test_solenoid_valve(self):
+        """
+        Test if the step this object is good equal
+        """
         solenoid_valve = SolenoidValve.objects.get(number=1)
         self.assertEqual(solenoid_valve.step, 10)
 
     def test_bottle(self):
+        """
+        Test if __str__ correctly return the name of the object in the database
+        """
         bottle = Bottle.objects.get(name='bottle1')
         self.assertEqual(bottle.solenoid_valve_id, 1)
         self.assertEqual(str(bottle), 'bottle1')
 
     def test_bottle_belong_cocktails(self):
+        """
+        Test if the many-to-many relationship is working properly
+        """
         bottle = BottlesBelongsCocktails.objects.get(bottle=1)
         cocktail = BottlesBelongsCocktails.objects.get(cocktail=1)
         self.assertEqual(bottle.bottle_id, 1)
@@ -77,6 +93,9 @@ class CocktailEngineTest(LiveServerTestCase):
         self.assertEqual(str(cocktail), '1')
 
     def test_cocktail(self):
+        """
+        Test if the cocktail exists and meets the requirements
+        """
         cocktail = Cocktail.objects.get(name="cocktailone")
         self.assertEqual(cocktail.description, 'cocktail one description')
         self.assertEqual(str(cocktail), 'cocktailone')
@@ -84,6 +103,10 @@ class CocktailEngineTest(LiveServerTestCase):
         self.assertEqual(cocktail_by_bottle.description, 'cocktail one description')
 
     def test_cocktail_views(self):
+        """
+        Test if the cocktails are well displayed on the page of the view,
+        or if the bottles are well in the list
+        """
         response = self.client.get(self.live_server_url +
                                    reverse('engine:cocktail_views'))
         self.assertEqual(response.status_code, 200)
@@ -103,6 +126,9 @@ class CocktailEngineTest(LiveServerTestCase):
                               "bottle4", "bottle5", "bottle6"])
 
     def test_view_cocktail_views_research(self):
+        """
+        Test the cocktail view if a search was made from a name of a cocktail
+        """
         self.browser.driver.get(self.live_server_url +
                                 reverse('engine:cocktail_views') + "?name=cocktailone")
 
@@ -112,6 +138,9 @@ class CocktailEngineTest(LiveServerTestCase):
         self.assertEqual(cocktail, 'Nom: cocktailone')
 
     def test_view_cocktail_views_bottle(self):
+        """
+        Test the view of cocktails when a bottle has been selected
+        """
         self.browser.driver.get(self.live_server_url +
                                 reverse('engine:cocktail_views') + "?bottle=2")
         cocktail = self.browser.driver.find_element_by_id \
@@ -122,6 +151,9 @@ class CocktailEngineTest(LiveServerTestCase):
     @patch('engine.views.make_cocktail.delay', lambda x: 0)
     @patch('engine.views.make_cocktail.app.control.inspect', MagicMock())
     def test_view_make_cocktail(self):
+        """
+        Test the creation of a cocktail selected in a view
+        """
         response = self.client.post(self.live_server_url +
                                     reverse('engine:make_the_cocktail'), {"cocktail_id": "1"},
                                     **{'HTTP_X_REQUESTED_WITH': 'XMLHttpRequest'})
@@ -145,6 +177,9 @@ class CocktailEngineTest(LiveServerTestCase):
         self.assertEqual(response_json['task_id'], 'error')
 
     def test_bottle_admin(self):
+        """
+        Test the addition of a bottle or the removal of it in the page "administration of bottles"
+        """
         self.browser.driver.get(self.live_server_url +
                                 reverse('engine:bottle_engine_admin'))
         bottle = self.browser.driver.find_element_by_id \
@@ -168,6 +203,10 @@ class CocktailEngineTest(LiveServerTestCase):
         self.assertEqual(bottle, 'Nom: bottle7')
 
     def test_bottle_admin_modify_bottle(self):
+        """
+        Test the modification of a bottle
+        if it is empty or when it is not well synchronized under the valve
+        """
         response = self.client.post(self.live_server_url +
                                     reverse('engine:bottle_modify_parameter'),
                                     {"step": 61, "solenoidValve": 6},
@@ -183,6 +222,9 @@ class CocktailEngineTest(LiveServerTestCase):
         self.assertTrue(bottle.empty, True)
 
     def test_cocktail_admin_add_cocktail(self):
+        """
+        Test the addition of a cocktail in the page "administration of cocktails"
+        """
         response = self.client.post(self.live_server_url +
                                     reverse('engine:cocktail_engine_admin'),
                                     {'name': 'cocktailfive',
@@ -219,11 +261,17 @@ class CocktailEngineTest(LiveServerTestCase):
 
 
 class CeleryTaskEngineTest(TestCase):
+    """
+    Spot test create in celery, for the hardware part
+    """
     @patch('engine.tasks.make_cocktail')
     @patch('engine.tasks.current_task', MagicMock(update_state=(MagicMock())))
     @patch('engine.tasks.MCP3008.read_adc', MagicMock(return_value=1))
     @patch('engine.tasks.GPIO.input', MagicMock(return_value=False))
     def test_my_task_is_called(self, mock_cocktail_task):
+        """
+        Test if the task does not return an error during its execution
+        """
         mock_cocktail_task.side_effect = Retry()
         self.assertRaises(Retry, make_cocktail([{'step': 1,
                                                  'first_pin': 1,

@@ -25,7 +25,7 @@ class BottleChooseForm(forms.Form):
     bottle = forms.ModelChoiceField(queryset=Bottle.objects.values_list('name', flat=True),
                                     label="Bouteille:", to_field_name="name")
     dose = forms.IntegerField(label='Dose:',
-                              widget=forms.NumberInput(attrs={'style': 'width:3rem','min':0}))
+                              widget=forms.NumberInput(attrs={'style':'width:3rem','min':0}))
 
 
 class CocktailMakeForm(forms.Form):
