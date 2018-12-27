@@ -2,8 +2,6 @@ $(function () {
     $(".empty").click(function () {
         this_empty = $(this);
         if ($(this_empty).is(':checked')) {
-            console.log("checked");
-            console.log($(this_empty).attr('name'));
             empty_object = $(this_empty).attr('name');
             $.ajax({
                 statusCode: {
